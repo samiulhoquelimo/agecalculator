@@ -51,7 +51,7 @@ private fun totalSec(birthday: LocalDate): Int = try {
 }
 
 private fun nextBirthdayPeriod(dayOfMonth: Int, month: Int): Period {
-    return Period.between(today, LocalDate.of(today.year + 1, month, dayOfMonth + 1))
+    return Period.between(today, LocalDate.of(today.year, month, dayOfMonth))
 }
 
 private fun age(birthday: LocalDate): Period {
