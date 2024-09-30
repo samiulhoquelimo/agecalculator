@@ -75,6 +75,14 @@ fun HomeState.resetState(): HomeState {
     )
 }
 
+fun isValidDate(dayOfMonth: Int, month: Int, year: Int): String? = try {
+    LocalDate.of(year, month, dayOfMonth)
+    null
+} catch (e: Exception) {
+    e.printStackTrace()
+    "Invalid date"
+}
+
 fun HomeState.calculation(
     dayOfMonth: Int,
     month: Int,

@@ -28,25 +28,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.droidturbo.agecalculator.ui.home.HomeViewModel
+import com.droidturbo.agecalculator.utils.isValidDate
 
 @Composable
 fun InputDateOfBirth(
-    reset: () -> Unit,
-    calculate: (day: Int, month: Int, year: Int) -> Unit
+    reset: () -> Unit = {},
+    calculate: (day: Int, month: Int, year: Int) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
-    var dayInput by remember { mutableStateOf("") }
-    var monthInput by remember { mutableStateOf("") }
-    var yearInput by remember { mutableStateOf("") }
+    var input by remember { mutableStateOf(viewModel.state.value.input) }
 
     var error: String? by remember { mutableStateOf(null) }
 
     fun clearFields() {
-        dayInput = ""
-        monthInput = ""
-        yearInput = ""
+        input = input.copy(dayOfMonth = "", month = "", year = "")
+        viewModel.setInput(input)
         error = null
     }
 
@@ -57,12 +58,12 @@ fun InputDateOfBirth(
 
     fun submit() {
         keyboardController?.hide()
-        val day = dayInput.toIntOrNull() ?: 0
-        val month = monthInput.toIntOrNull() ?: 0
-        val year = yearInput.toIntOrNull() ?: 0
+        val dayOfMonth = input.dayOfMonth.toIntOrNull() ?: 0
+        val month = input.month.toIntOrNull() ?: 0
+        val year = input.year.toIntOrNull() ?: 0
 
         // day validation
-        if (day > 31 || day < 1) {
+        if (dayOfMonth > 31 || dayOfMonth < 1) {
             error = "Invalid day"
             return
         }
@@ -79,7 +80,13 @@ fun InputDateOfBirth(
             return
         }
 
-        calculate(day, month, year)
+        // date validation
+        if (isValidDate(dayOfMonth, month, year) != null) {
+            error = "Invalid date"
+            return
+        }
+
+        calculate(dayOfMonth, month, year)
     }
 
     Row(
@@ -91,10 +98,13 @@ fun InputDateOfBirth(
     ) {
         OutlinedTextField(
             modifier = Modifier.weight(1 / 4f),
-            value = dayInput,
+            value = input.dayOfMonth,
             singleLine = true,
-            onValueChange = { input ->
-                if (input.length <= 2) dayInput = input
+            onValueChange = { dayOfMonth ->
+                if (dayOfMonth.length <= 2) {
+                    input = input.copy(dayOfMonth = dayOfMonth)
+                    viewModel.setInput(input)
+                }
                 error = null
             },
             label = { Text(text = "Day", modifier = Modifier.basicMarquee()) },
@@ -105,9 +115,12 @@ fun InputDateOfBirth(
         )
         OutlinedTextField(
             modifier = Modifier.weight(1 / 4f),
-            value = monthInput,
-            onValueChange = { input ->
-                if (input.length <= 2) monthInput = input
+            value = input.month,
+            onValueChange = { month ->
+                if (month.length <= 2) {
+                    input = input.copy(month = month)
+                    viewModel.setInput(input)
+                }
                 error = null
             },
             label = { Text(text = "Month", modifier = Modifier.basicMarquee()) },
@@ -118,9 +131,12 @@ fun InputDateOfBirth(
         )
         OutlinedTextField(
             modifier = Modifier.weight(1 / 2f),
-            value = yearInput,
-            onValueChange = { input ->
-                if (input.length <= 4) yearInput = input
+            value = input.year,
+            onValueChange = { year ->
+                if (year.length <= 4) {
+                    input = input.copy(year = year)
+                    viewModel.setInput(input)
+                }
                 error = null
             },
             label = { Text(text = "Year", modifier = Modifier.basicMarquee()) },
@@ -139,9 +155,12 @@ fun InputDateOfBirth(
     }
     error?.let { errorMessage ->
         Box(
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
         ) {
             Text(
+                modifier = Modifier.align(Alignment.Center),
                 text = errorMessage,
                 color = Color.Red,
                 fontWeight = FontWeight.SemiBold

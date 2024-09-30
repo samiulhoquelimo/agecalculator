@@ -1,6 +1,7 @@
 package com.droidturbo.agecalculator.ui.home
 
 data class HomeState(
+    val input: HomeInput = HomeInput(),
     val ageYear: Int = 0,
     val ageMonth: Int = 0,
     val ageDay: Int = 0,

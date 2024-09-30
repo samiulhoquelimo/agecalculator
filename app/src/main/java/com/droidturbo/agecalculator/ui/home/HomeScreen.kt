@@ -49,7 +49,7 @@ fun HomeScreen(
         CardBlock {
             Column {
                 TitleBlock(text = "Enter your Date of Birth")
-                InputDateOfBirth(::reset, ::calculation)
+                InputDateOfBirth(::reset, ::calculation, viewModel)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

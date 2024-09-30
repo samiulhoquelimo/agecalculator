@@ -25,6 +25,14 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun setInput(input: HomeInput) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(input = input)
+            }
+        }
+    }
+
     fun calculate(day: Int, month: Int, year: Int) {
         viewModelScope.launch {
             _state.update {
