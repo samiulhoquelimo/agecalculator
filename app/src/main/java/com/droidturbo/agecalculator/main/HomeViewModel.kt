@@ -1,14 +1,15 @@
-package com.droidturbo.agecalculator.ui.home
+package com.droidturbo.agecalculator.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.droidturbo.agecalculator.utils.calculation
+import com.droidturbo.agecalculator.utils.calculateAge
 import com.droidturbo.agecalculator.utils.resetState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,10 +19,15 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     val state = _state.asStateFlow()
 
     fun reset() {
-        viewModelScope.launch {
-            _state.update {
-                it.resetState()
-            }
+        _state.update { it.resetState() }
+    }
+
+    fun calculate(day: Int, month: Int, year: Int) {
+        val date = runCatching { LocalDate.of(year, month, day) }.getOrNull()
+            ?: return
+
+        _state.update {
+            it.calculateAge(date)
         }
     }
 
@@ -29,14 +35,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _state.update {
                 it.copy(input = input)
-            }
-        }
-    }
-
-    fun calculate(day: Int, month: Int, year: Int) {
-        viewModelScope.launch {
-            _state.update {
-                it.calculation(day, month, year)
             }
         }
     }

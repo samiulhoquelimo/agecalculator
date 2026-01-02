@@ -1,4 +1,4 @@
-package com.droidturbo.agecalculator.ui.home
+package com.droidturbo.agecalculator.main
 
 data class HomeInput(
     val dayOfMonth: String = "",

@@ -1,6 +1,6 @@
 package com.droidturbo.agecalculator.utils
 
-import com.droidturbo.agecalculator.ui.home.HomeState
+import com.droidturbo.agecalculator.main.HomeState
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -13,17 +13,17 @@ Ref: https://docs.oracle.com/javase/10/docs/api/java/time/LocalDate.html#isSuppo
 No Support: HOURS, MINUTES, SECONDS
  */
 
-private val today: LocalDate = LocalDate.now()
+private fun today(): LocalDate = LocalDate.now()
 
 private fun totalWeek(birthday: LocalDate): Int = try {
-    ChronoUnit.WEEKS.between(birthday, today).toInt()
+    ChronoUnit.WEEKS.between(birthday, today()).toInt()
 } catch (e: Exception) {
     e.printStackTrace()
     0
 }
 
 private fun totalDay(birthday: LocalDate): Int = try {
-    ChronoUnit.DAYS.between(birthday, today).toInt()
+    ChronoUnit.DAYS.between(birthday, today()).toInt()
 } catch (e: Exception) {
     e.printStackTrace()
     0
@@ -50,12 +50,16 @@ private fun totalSec(birthday: LocalDate): Int = try {
     0
 }
 
-private fun nextBirthdayPeriod(dayOfMonth: Int, month: Int): Period {
-    return Period.between(today, LocalDate.of(today.year + 1, month, dayOfMonth))
+private fun nextBirthdayPeriod(birthday: LocalDate): Period {
+    val today = today()
+    val nextBirthday = birthday.withYear(today.year)
+        .let { if (!it.isAfter(today)) it.plusYears(1) else it }
+
+    return Period.between(today, nextBirthday)
 }
 
 private fun age(birthday: LocalDate): Period {
-    return Period.between(birthday, today)
+    return Period.between(birthday, today())
 }
 
 fun HomeState.resetState(): HomeState {
@@ -83,27 +87,22 @@ fun isValidDate(dayOfMonth: Int, month: Int, year: Int): String? = try {
     "Invalid date"
 }
 
-fun HomeState.calculation(
-    dayOfMonth: Int,
-    month: Int,
-    year: Int
-): HomeState {
-    val birthday = LocalDate.of(year, month, dayOfMonth)
-    val age = age(birthday)
-    val nextBirthday = nextBirthdayPeriod(dayOfMonth, month)
+fun HomeState.calculateAge(birthday: LocalDate): HomeState {
+    val age = Period.between(birthday, today())
+    val nextBirthday = nextBirthdayPeriod(birthday)
 
-    return copy(
-        ageDay = age.days,
-        ageMonth = age.months,
+    return HomeState(
         ageYear = age.years,
-        bdDay = nextBirthday.days,
+        ageMonth = age.months,
+        ageDay = age.days,
         bdMonth = nextBirthday.months,
+        bdDay = nextBirthday.days,
         tYear = age.years,
         tMonth = age.toTotalMonths().toInt(),
-        tDay = totalDay(birthday),
         tWeek = totalWeek(birthday),
+        tDay = totalDay(birthday),
         tHour = totalHours(birthday),
         tMin = totalMin(birthday),
-        tSec = totalSec(birthday)
+        tSec = totalSec(birthday),
     )
 }

@@ -1,4 +1,4 @@
-package com.droidturbo.agecalculator.ui.home
+package com.droidturbo.agecalculator.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,19 +16,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.droidturbo.agecalculator.ui.components.AddAppBar
-import com.droidturbo.agecalculator.ui.components.CardBlock
-import com.droidturbo.agecalculator.ui.components.ExtraInfoField
-import com.droidturbo.agecalculator.ui.components.InputDateOfBirth
-import com.droidturbo.agecalculator.ui.components.ThreeColumnField
-import com.droidturbo.agecalculator.ui.components.ThreeColumnTitle
-import com.droidturbo.agecalculator.ui.components.TitleBlock
-import com.droidturbo.agecalculator.ui.components.TwoColumnField
-import com.droidturbo.agecalculator.ui.components.TwoColumnTitle
+import com.droidturbo.agecalculator.ui.content.AddAppBar
+import com.droidturbo.agecalculator.ui.content.CardBlock
+import com.droidturbo.agecalculator.ui.content.ExtraInfoField
+import com.droidturbo.agecalculator.ui.content.InputDateOfBirth
+import com.droidturbo.agecalculator.ui.content.ThreeColumnField
+import com.droidturbo.agecalculator.ui.content.ThreeColumnTitle
+import com.droidturbo.agecalculator.ui.content.TitleBlock
+import com.droidturbo.agecalculator.ui.content.TwoColumnField
+import com.droidturbo.agecalculator.ui.content.TwoColumnTitle
 import com.droidturbo.agecalculator.ui.theme.AppTheme
 
 @Composable
@@ -38,9 +37,21 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    fun reset() = viewModel.reset()
-    fun calculation(day: Int, month: Int, year: Int) = viewModel.calculate(day, month, year)
+    HomeScreenContent(
+        modifier = modifier,
+        state = state,
+        reset = viewModel::reset,
+        calculation = viewModel::calculate
+    )
+}
 
+@Composable
+fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    state: HomeState = HomeState(),
+    reset: () -> Unit = {},
+    calculation: (Int, Int, Int) -> Unit = { _, _, _ -> },
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -49,7 +60,7 @@ fun HomeScreen(
         CardBlock {
             Column {
                 TitleBlock(text = "Enter your Date of Birth")
-                InputDateOfBirth(::reset, ::calculation, viewModel)
+                InputDateOfBirth(reset, calculation)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -99,9 +110,7 @@ fun HomeScreen(
     }
 }
 
-
-//@Preview(showBackground = true, device = Devices.NEXUS_5)
-@Preview(showBackground = true, device = Devices.NEXUS_5)
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
@@ -110,7 +119,7 @@ fun HomeScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ) { innerPadding ->
-            HomeScreen(Modifier.padding(innerPadding))
+            HomeScreenContent(Modifier.padding(innerPadding))
         }
     }
 }

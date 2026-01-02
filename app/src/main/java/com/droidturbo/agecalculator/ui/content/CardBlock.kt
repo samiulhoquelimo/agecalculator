@@ -1,4 +1,4 @@
-package com.droidturbo.agecalculator.ui.components
+package com.droidturbo.agecalculator.ui.content
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
@@ -23,7 +23,7 @@ fun CardBlock(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onTertiary,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, Color.Gray),

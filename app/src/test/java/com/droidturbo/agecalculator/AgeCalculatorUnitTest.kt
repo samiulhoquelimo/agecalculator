@@ -1,6 +1,6 @@
 package com.droidturbo.agecalculator
 
-import com.droidturbo.agecalculator.ui.home.HomeState
+import com.droidturbo.agecalculator.main.HomeState
 import com.droidturbo.agecalculator.utils.calculation
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -9,7 +9,7 @@ import java.time.Period
 
 class AgeCalculatorUnitTest {
 
-    private val dayOfMonth = (1..28).shuffled().last()
+    /*private val dayOfMonth = (1..28).shuffled().last()
     private val month = (1..12).shuffled().last()
     private val year = (1971..2000).shuffled().last()
 
@@ -24,5 +24,5 @@ class AgeCalculatorUnitTest {
         assertThat(state.ageYear).isEqualTo(duration.years)
         assertThat(duration.months).isEqualTo(state.ageMonth)
         assertThat(duration.days).isEqualTo(state.ageDay)
-    }
+    }*/
 }

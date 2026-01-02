@@ -1,4 +1,4 @@
-package com.droidturbo.agecalculator.ui.components
+package com.droidturbo.agecalculator.ui.content
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
