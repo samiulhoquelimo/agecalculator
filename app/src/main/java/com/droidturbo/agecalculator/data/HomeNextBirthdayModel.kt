@@ -1,4 +1,4 @@
-package com.droidturbo.agecalculator.main
+package com.droidturbo.agecalculator.data
 
 data class HomeNextBirthdayModel(
     val bdMonth: Int = 0,

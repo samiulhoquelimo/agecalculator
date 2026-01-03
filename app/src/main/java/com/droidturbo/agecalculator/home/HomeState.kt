@@ -1,4 +1,8 @@
-package com.droidturbo.agecalculator.main
+package com.droidturbo.agecalculator.home
+
+import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
+import com.droidturbo.agecalculator.data.HomeTotalModel
 
 data class HomeState(
     val dayOfMonth: String = "",

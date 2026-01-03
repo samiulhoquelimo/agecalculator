@@ -14,13 +14,11 @@ import com.droidturbo.agecalculator.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddAppBar() {
-    val appName = stringResource(id = R.string.app_name)
-
+fun TopAppBar() {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = appName,
+                text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
@@ -37,6 +35,6 @@ fun AddAppBar() {
 
 @Preview
 @Composable
-fun AddAppBarPreview() {
-    AddAppBar()
+fun TopAppBarPreview() {
+    TopAppBar()
 }

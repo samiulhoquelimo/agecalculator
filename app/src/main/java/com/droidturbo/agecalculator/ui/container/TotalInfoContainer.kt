@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.droidturbo.agecalculator.main.HomeState
+import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.ui.content.CardBlock
 import com.droidturbo.agecalculator.ui.content.ExtraInfoField
 import com.droidturbo.agecalculator.ui.content.TitleBlock

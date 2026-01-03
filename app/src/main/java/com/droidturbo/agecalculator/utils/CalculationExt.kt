@@ -1,9 +1,9 @@
 package com.droidturbo.agecalculator.utils
 
-import com.droidturbo.agecalculator.main.HomeAgeModel
-import com.droidturbo.agecalculator.main.HomeNextBirthdayModel
-import com.droidturbo.agecalculator.main.HomeState
-import com.droidturbo.agecalculator.main.HomeTotalModel
+import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
+import com.droidturbo.agecalculator.home.HomeState
+import com.droidturbo.agecalculator.data.HomeTotalModel
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit

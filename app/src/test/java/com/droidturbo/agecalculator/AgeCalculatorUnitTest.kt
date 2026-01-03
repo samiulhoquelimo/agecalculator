@@ -1,6 +1,6 @@
 package com.droidturbo.agecalculator
 
-import com.droidturbo.agecalculator.main.HomeState
+import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.utils.calculateAge
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.droidturbo.agecalculator.main
+package com.droidturbo.agecalculator.data
 
 data class HomeTotalModel(
     val tYear: Int = 0,
