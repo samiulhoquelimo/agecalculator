@@ -16,8 +16,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -25,6 +29,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.droidturbo.agecalculator.home.HomeState
+import com.droidturbo.agecalculator.ui.theme.AppTypography
+import com.droidturbo.agecalculator.ui.theme.lightScheme
 
 @Composable
 fun InputDateOfBirth(
@@ -37,6 +43,10 @@ fun InputDateOfBirth(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+
+    val dayFocus = remember { FocusRequester() }
+    val monthFocus = remember { FocusRequester() }
+    val yearFocus = remember { FocusRequester() }
 
     fun submit() {
         keyboardController?.hide()
@@ -52,9 +62,23 @@ fun InputDateOfBirth(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(dayFocus)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onDayChange(state.dayOfMonth)
+                        }
+                    },
                 value = state.dayOfMonth,
-                onValueChange = onDayChange,
+                onValueChange = {
+                    if (it.length <= 2) {
+                        onDayChange(it)
+                        if (it.length == 2) {
+                            monthFocus.requestFocus()
+                        }
+                    }
+                },
                 label = { Text("Day") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -64,9 +88,23 @@ fun InputDateOfBirth(
             )
 
             OutlinedTextField(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(monthFocus)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onMonthChange(state.month)
+                        }
+                    },
                 value = state.month,
-                onValueChange = onMonthChange,
+                onValueChange = {
+                    if (it.length <= 2) {
+                        onMonthChange(it)
+                        if (it.length == 2) {
+                            yearFocus.requestFocus()
+                        }
+                    }
+                },
                 label = { Text("Month") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -76,9 +114,23 @@ fun InputDateOfBirth(
             )
 
             OutlinedTextField(
-                modifier = Modifier.weight(1.5f),
+                modifier = Modifier
+                    .weight(1.5f)
+                    .focusRequester(yearFocus)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onYearChange(state.year)
+                        }
+                    },
                 value = state.year,
-                onValueChange = onYearChange,
+                onValueChange = {
+                    if (it.length <= 4) {
+                        onYearChange(it)
+                        if (it.length == 4) {
+                            submit()
+                        }
+                    }
+                },
                 label = { Text("Year") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -131,5 +183,15 @@ fun InputDateOfBirth(
 @Preview(showBackground = true)
 @Composable
 fun InputDateOfBirthPreview() {
-    InputDateOfBirth()
+    MaterialTheme(
+        colorScheme = lightScheme,
+        typography = AppTypography,
+        content = {
+            InputDateOfBirth(
+                state = HomeState(
+                    error = "Invalid date"
+                )
+            )
+        }
+    )
 }

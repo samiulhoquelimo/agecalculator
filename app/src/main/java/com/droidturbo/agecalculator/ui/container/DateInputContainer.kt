@@ -3,13 +3,19 @@ package com.droidturbo.agecalculator.ui.container
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.ui.content.CardBlock
 import com.droidturbo.agecalculator.ui.content.InputDateOfBirth
 import com.droidturbo.agecalculator.ui.content.TitleBlock
+import com.droidturbo.agecalculator.ui.theme.AppTypography
+import com.droidturbo.agecalculator.ui.theme.lightScheme
 
 @Composable
 fun DateInputContainer(
@@ -22,7 +28,7 @@ fun DateInputContainer(
 ) {
     CardBlock {
         Column {
-            TitleBlock(text = "Enter your Date of Birth")
+            TitleBlock(text = stringResource(R.string.enter_your_date_of_birth))
             InputDateOfBirth(
                 state = state,
                 onDayChange = onDayChange,
@@ -36,7 +42,14 @@ fun DateInputContainer(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun PreviewDateInputContainer(modifier: Modifier = Modifier) {
-    DateInputContainer()
+fun DateInputContainerPreview() {
+    MaterialTheme(
+        colorScheme = lightScheme,
+        typography = AppTypography,
+        content = {
+            DateInputContainer()
+        }
+    )
 }

@@ -92,7 +92,7 @@ fun HomeScreenPreview() {
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             ) { innerPadding ->
                 HomeScreenContent(
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(paddingValues = innerPadding)
                 )
             }
         }

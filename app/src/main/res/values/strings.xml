@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Age Calculator</string>
+    <string name="general_error">Something wrong happened</string>
+    <string name="enter_your_date_of_birth">Enter your Date of Birth</string>
 </resources>
