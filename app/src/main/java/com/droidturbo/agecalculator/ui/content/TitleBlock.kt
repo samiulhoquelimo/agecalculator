@@ -30,7 +30,5 @@ fun TitleBlock(
 @Preview(showBackground = true)
 @Composable
 fun TitleBlockPreview() {
-    TitleBlock(
-        "This is a Title"
-    )
+    TitleBlock(text = "This is a Title")
 }

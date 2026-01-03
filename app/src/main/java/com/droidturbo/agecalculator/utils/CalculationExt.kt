@@ -1,6 +1,9 @@
 package com.droidturbo.agecalculator.utils
 
+import com.droidturbo.agecalculator.main.HomeAgeModel
+import com.droidturbo.agecalculator.main.HomeNextBirthdayModel
 import com.droidturbo.agecalculator.main.HomeState
+import com.droidturbo.agecalculator.main.HomeTotalModel
 import java.time.LocalDate
 import java.time.Period
 import java.time.temporal.ChronoUnit
@@ -62,23 +65,6 @@ private fun age(birthday: LocalDate): Period {
     return Period.between(birthday, today())
 }
 
-fun HomeState.resetState(): HomeState {
-    return copy(
-        ageDay = 0,
-        ageMonth = 0,
-        ageYear = 0,
-        bdDay = 0,
-        bdMonth = 0,
-        tYear = 0,
-        tMonth = 0,
-        tWeek = 0,
-        tDay = 0,
-        tHour = 0,
-        tMin = 0,
-        tSec = 0,
-    )
-}
-
 fun isValidDate(dayOfMonth: Int, month: Int, year: Int): String? = try {
     LocalDate.of(year, month, dayOfMonth)
     null
@@ -88,21 +74,33 @@ fun isValidDate(dayOfMonth: Int, month: Int, year: Int): String? = try {
 }
 
 fun HomeState.calculateAge(birthday: LocalDate): HomeState {
-    val age = Period.between(birthday, today())
-    val nextBirthday = nextBirthdayPeriod(birthday)
+    val agePeriod = Period.between(birthday, today())
+    val nextBirthdayPeriod = nextBirthdayPeriod(birthday)
 
-    return HomeState(
-        ageYear = age.years,
-        ageMonth = age.months,
-        ageDay = age.days,
-        bdMonth = nextBirthday.months,
-        bdDay = nextBirthday.days,
-        tYear = age.years,
-        tMonth = age.toTotalMonths().toInt(),
+    val age = HomeAgeModel(
+        ageYear = agePeriod.years,
+        ageMonth = agePeriod.months,
+        ageDay = agePeriod.days,
+    )
+
+    val nextBirthday = HomeNextBirthdayModel(
+        bdMonth = nextBirthdayPeriod.months,
+        bdDay = nextBirthdayPeriod.days,
+    )
+
+    val totalInfo = HomeTotalModel(
+        tYear = agePeriod.years,
+        tMonth = agePeriod.toTotalMonths().toInt(),
         tWeek = totalWeek(birthday),
         tDay = totalDay(birthday),
         tHour = totalHours(birthday),
         tMin = totalMin(birthday),
         tSec = totalSec(birthday),
+    )
+
+    return HomeState(
+        age = age,
+        nextBirthday = nextBirthday,
+        totalInfo = totalInfo,
     )
 }

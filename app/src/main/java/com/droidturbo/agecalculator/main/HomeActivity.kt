@@ -26,7 +26,7 @@ class HomeActivity : ComponentActivity() {
                         .fillMaxSize()
                         .systemBarsPadding(),
                     topBar = { AddAppBar() },
-                    containerColor = MaterialTheme.colorScheme.background
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
                 ) { innerPadding ->
                     HomeScreen(
                         modifier = Modifier.padding(innerPadding)
