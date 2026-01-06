@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -57,8 +56,7 @@ fun InputDateOfBirth(
     Column {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
@@ -71,12 +69,12 @@ fun InputDateOfBirth(
                         }
                     },
                 value = state.dayOfMonth,
-                onValueChange = {
-                    if (it.length <= 2) {
-                        onDayChange(it)
-                        if (it.length == 2) {
-                            monthFocus.requestFocus()
-                        }
+                onValueChange = { newValue ->
+                    if (newValue.length <= 2) {
+                        onDayChange(newValue)
+                    }
+                    if (newValue.isNotEmpty() && newValue.toInt() > 3) {
+                        monthFocus.requestFocus()
                     }
                 },
                 label = { Text("Day") },
@@ -97,12 +95,12 @@ fun InputDateOfBirth(
                         }
                     },
                 value = state.month,
-                onValueChange = {
-                    if (it.length <= 2) {
-                        onMonthChange(it)
-                        if (it.length == 2) {
-                            yearFocus.requestFocus()
-                        }
+                onValueChange = { newValue ->
+                    if (newValue.length <= 2) {
+                        onMonthChange(newValue)
+                    }
+                    if (newValue.isNotEmpty() && newValue.toInt() > 1) {
+                        yearFocus.requestFocus()
                     }
                 },
                 label = { Text("Month") },
@@ -123,12 +121,12 @@ fun InputDateOfBirth(
                         }
                     },
                 value = state.year,
-                onValueChange = {
-                    if (it.length <= 4) {
-                        onYearChange(it)
-                        if (it.length == 4) {
-                            submit()
-                        }
+                onValueChange = { newValue ->
+                    if (newValue.length <= 4) {
+                        onYearChange(newValue)
+                    }
+                    if (newValue.length == 4) {
+                        submit()
                     }
                 },
                 label = { Text("Year") },
@@ -151,15 +149,14 @@ fun InputDateOfBirth(
                 ),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 8.dp)
             )
         }
 
+        ContentSpacer()
+
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Button(
                 modifier = Modifier.weight(1f),
@@ -187,11 +184,7 @@ fun InputDateOfBirthPreview() {
         colorScheme = lightScheme,
         typography = AppTypography,
         content = {
-            InputDateOfBirth(
-                state = HomeState(
-                    error = "Invalid date"
-                )
-            )
+            InputDateOfBirth(state = HomeState(error = "Invalid date"))
         }
     )
 }

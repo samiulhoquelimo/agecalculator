@@ -1,8 +1,7 @@
 package com.droidturbo.agecalculator.ui.container
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.ui.content.CardBlock
+import com.droidturbo.agecalculator.ui.content.ContentSpacer
 import com.droidturbo.agecalculator.ui.content.InputDateOfBirth
 import com.droidturbo.agecalculator.ui.content.TitleBlock
 import com.droidturbo.agecalculator.ui.theme.AppTypography
@@ -27,8 +27,9 @@ fun DateInputContainer(
     onReset: () -> Unit = {}
 ) {
     CardBlock {
-        Column {
+        Column(modifier = Modifier.padding(8.dp)) {
             TitleBlock(text = stringResource(R.string.enter_your_date_of_birth))
+            ContentSpacer()
             InputDateOfBirth(
                 state = state,
                 onDayChange = onDayChange,
@@ -37,7 +38,7 @@ fun DateInputContainer(
                 onSubmit = onSubmit,
                 onReset = onReset
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            ContentSpacer()
         }
     }
 }
@@ -49,7 +50,11 @@ fun DateInputContainerPreview() {
         colorScheme = lightScheme,
         typography = AppTypography,
         content = {
-            DateInputContainer()
+            DateInputContainer(
+                state = HomeState(
+                    error = "Invalid date"
+                )
+            )
         }
     )
 }

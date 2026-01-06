@@ -23,15 +23,12 @@ class HomeActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 Scaffold(
-                    modifier = Modifier.Companion
-                        .fillMaxSize()
-                        .systemBarsPadding(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     topBar = { TopAppBar() },
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ) { innerPadding ->
-                    HomeScreen(
-                        modifier = Modifier.Companion.padding(innerPadding)
-                    )
+                    HomeScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
