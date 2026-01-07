@@ -2,4 +2,8 @@
     <string name="app_name">বয়স ক্যালকুলেটর</string>
     <string name="general_error">কিছু সমস্যার সম্মুখীন হয়েছে</string>
     <string name="enter_your_date_of_birth">আপনার জন্ম তারিখ লিখুন</string>
+    <string name="invalid_date">ভুল তারিখ</string>
+    <string name="days">দিন</string>
+    <string name="months">মাস</string>
+    <string name="years">বছর</string>
 </resources>

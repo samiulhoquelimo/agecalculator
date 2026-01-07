@@ -23,6 +23,7 @@ fun DateInputContainer(
     onDayChange: (String) -> Unit = {},
     onMonthChange: (String) -> Unit = {},
     onYearChange: (String) -> Unit = {},
+    onDateOfBirthChange: (String) -> Unit = {},
     onSubmit: () -> Unit = {},
     onReset: () -> Unit = {}
 ) {
@@ -35,6 +36,7 @@ fun DateInputContainer(
                 onDayChange = onDayChange,
                 onMonthChange = onMonthChange,
                 onYearChange = onYearChange,
+                onDateOfBirthChange = onDateOfBirthChange,
                 onSubmit = onSubmit,
                 onReset = onReset
             )

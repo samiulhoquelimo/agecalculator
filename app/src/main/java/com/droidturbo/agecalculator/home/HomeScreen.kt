@@ -27,8 +27,7 @@ import com.droidturbo.agecalculator.ui.theme.lightScheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    modifier: Modifier, viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -38,6 +37,7 @@ fun HomeScreen(
         onDayChange = viewModel::updateDay,
         onMonthChange = viewModel::updateMonth,
         onYearChange = viewModel::updateYear,
+        onDateOfBirthChange = viewModel::onDateOfBirthChange,
         onSubmit = viewModel::calculate
     )
 }
@@ -49,6 +49,7 @@ fun HomeScreenContent(
     onDayChange: (String) -> Unit = {},
     onMonthChange: (String) -> Unit = {},
     onYearChange: (String) -> Unit = {},
+    onDateOfBirthChange: (String) -> Unit = {},
     onSubmit: () -> Unit = {},
     onReset: () -> Unit = {}
 ) {
@@ -64,6 +65,7 @@ fun HomeScreenContent(
             onDayChange = onDayChange,
             onMonthChange = onMonthChange,
             onYearChange = onYearChange,
+            onDateOfBirthChange = onDateOfBirthChange,
             onSubmit = onSubmit,
             onReset = onReset
         )
@@ -81,9 +83,7 @@ fun HomeScreenContent(
 @Composable
 fun HomeScreenPreview() {
     MaterialTheme(
-        colorScheme = lightScheme,
-        typography = AppTypography,
-        content = {
+        colorScheme = lightScheme, typography = AppTypography, content = {
             Scaffold(
                 modifier = Modifier
                     .fillMaxSize()
@@ -95,6 +95,5 @@ fun HomeScreenPreview() {
                     modifier = Modifier.padding(paddingValues = innerPadding)
                 )
             }
-        }
-    )
+        })
 }

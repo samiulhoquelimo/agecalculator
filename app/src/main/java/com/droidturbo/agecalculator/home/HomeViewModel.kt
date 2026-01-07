@@ -28,6 +28,16 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         _state.update { it.copy(year = value) }
     }
 
+    fun onDateOfBirthChange(value: String) {
+        _state.update {
+            it.copy(
+                year = value.split("-")[0],
+                month = value.split("-")[1],
+                dayOfMonth = value.split("-")[2],
+            )
+        }
+    }
+
     fun calculate() {
         val current = _state.value
 

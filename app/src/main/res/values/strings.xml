@@ -2,4 +2,8 @@
     <string name="app_name">Age Calculator</string>
     <string name="general_error">Something wrong happened</string>
     <string name="enter_your_date_of_birth">Enter your Date of Birth</string>
+    <string name="invalid_date">Invalid Date</string>
+    <string name="days">Days</string>
+    <string name="months">Months</string>
+    <string name="years">Years</string>
 </resources>
