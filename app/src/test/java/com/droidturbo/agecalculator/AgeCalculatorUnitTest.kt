@@ -4,9 +4,9 @@ import org.junit.Test
 
 class AgeCalculatorUnitTest {
 
-    private val dayOfMonth = (1..28).shuffled().last()
-    private val month = (1..12).shuffled().last()
-    private val year = (1971..2000).shuffled().last()
+//    private val dayOfMonth = (1..28).shuffled().last()
+//    private val month = (1..12).shuffled().last()
+//    private val year = (1971..2000).shuffled().last()
 
     @Test
     fun `check calculation is age calculation is correct`() {

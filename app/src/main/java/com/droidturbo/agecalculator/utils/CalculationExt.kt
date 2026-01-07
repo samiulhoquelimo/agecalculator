@@ -3,7 +3,6 @@ package com.droidturbo.agecalculator.utils
 import com.droidturbo.agecalculator.data.HomeAgeModel
 import com.droidturbo.agecalculator.data.HomeDataModel
 import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
-import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.data.HomeTotalModel
 import java.time.LocalDate
 import java.time.Period
