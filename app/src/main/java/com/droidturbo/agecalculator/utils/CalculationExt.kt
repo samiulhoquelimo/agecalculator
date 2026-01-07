@@ -1,6 +1,7 @@
 package com.droidturbo.agecalculator.utils
 
 import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.HomeDataModel
 import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
 import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.data.HomeTotalModel
@@ -61,19 +62,7 @@ private fun nextBirthdayPeriod(birthday: LocalDate): Period {
     return Period.between(today, nextBirthday)
 }
 
-private fun age(birthday: LocalDate): Period {
-    return Period.between(birthday, today())
-}
-
-fun isValidDate(dayOfMonth: Int, month: Int, year: Int): String? = try {
-    LocalDate.of(year, month, dayOfMonth)
-    null
-} catch (e: Exception) {
-    e.printStackTrace()
-    "Invalid date"
-}
-
-fun HomeState.calculateAge(birthday: LocalDate): HomeState {
+fun calculateAge(birthday: LocalDate): HomeDataModel {
     val agePeriod = Period.between(birthday, today())
     val nextBirthdayPeriod = nextBirthdayPeriod(birthday)
 
@@ -98,7 +87,7 @@ fun HomeState.calculateAge(birthday: LocalDate): HomeState {
         tSec = totalSec(birthday),
     )
 
-    return HomeState(
+    return HomeDataModel(
         age = age,
         nextBirthday = nextBirthday,
         totalInfo = totalInfo,

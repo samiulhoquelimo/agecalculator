@@ -38,7 +38,8 @@ fun HomeScreen(
         onMonthChange = viewModel::updateMonth,
         onYearChange = viewModel::updateYear,
         onDateOfBirthChange = viewModel::onDateOfBirthChange,
-        onSubmit = viewModel::calculate
+        onSubmit = viewModel::calculate,
+        onReset = viewModel::reset
     )
 }
 

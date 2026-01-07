@@ -6,4 +6,6 @@
     <string name="days">দিন</string>
     <string name="months">মাস</string>
     <string name="years">বছর</string>
+    <string name="check_age">বয়স যাচাই করুন</string>
+    <string name="reset">পুনরায় সেট করুন</string>
 </resources>

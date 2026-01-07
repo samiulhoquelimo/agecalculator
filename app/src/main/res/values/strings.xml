@@ -6,4 +6,6 @@
     <string name="days">Days</string>
     <string name="months">Months</string>
     <string name="years">Years</string>
+    <string name="check_age">Check Age</string>
+    <string name="reset">Reset</string>
 </resources>

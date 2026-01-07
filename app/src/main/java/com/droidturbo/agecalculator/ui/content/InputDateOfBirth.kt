@@ -62,77 +62,66 @@ fun InputDateOfBirth(
     val monthFocus = remember { FocusRequester() }
     val yearFocus = remember { FocusRequester() }
 
-    fun nextRequestFocus(current: FocusRequester): FocusRequester = when (current) {
-        dayFocus -> monthFocus
-        monthFocus -> yearFocus
-        else -> when {
-            state.dayOfMonth.isNotEmpty() -> dayFocus
-            state.month.isNotEmpty() -> monthFocus
-            else -> yearFocus
-        }
-    }
-
     fun submit() {
         keyboardController?.hide()
         focusManager.clearFocus()
         onSubmit()
     }
 
-    fun isInputValid(): Boolean = validator(
-        dayOfMonth = state.dayOfMonth, month = state.month, year = state.year
+    fun isInputValid() = validator(
+        dayOfMonth = state.dayOfMonth,
+        month = state.month,
+        year = state.year
     )
 
     fun dayValueChange(newValue: String) {
-        if (newValue.length <= 2) onDayChange(newValue)
+        if (newValue.length > 2) return
+        onDayChange(newValue)
 
-        val dayOfMonth = newValue.toIntOrNull() ?: 0
-        if (dayOfMonth > 3 && isDayOfMonthValid(dayOfMonth = newValue)) {
-            nextRequestFocus(current = dayFocus).requestFocus()
+        val day = newValue.toIntOrNull() ?: return
+
+        // If first digit > 3, no valid second digit exists → jump to month
+        if (day > 3 || isDayOfMonthValid(newValue)) {
+            monthFocus.requestFocus()
         }
-
         if (isInputValid()) submit()
     }
 
     fun monthValueChange(newValue: String) {
-        if (newValue.length <= 2) onMonthChange(newValue)
+        if (newValue.length > 2) return
+        onMonthChange(newValue)
 
-        val month = newValue.toIntOrNull() ?: 0
-        if (month > 1 && isMonthValid(month = newValue)) {
-            nextRequestFocus(current = monthFocus).requestFocus()
+        val month = newValue.toIntOrNull() ?: return
+
+        // If first digit > 1, no valid second digit exists → jump to year
+        if (month > 1 || isMonthValid(newValue)) {
+            yearFocus.requestFocus()
         }
-
         if (isInputValid()) submit()
     }
 
     fun yearValueChange(newValue: String) {
-        if (newValue.length <= 4) onYearChange(newValue)
+        if (newValue.length > 4) return
+        onYearChange(newValue)
 
-        val year = newValue.toIntOrNull() ?: 0
-        if (year > 1 && isYearValid(year = newValue)) {
-            nextRequestFocus(current = yearFocus).requestFocus()
+        val year = newValue.toIntOrNull() ?: return
+
+        // Auto-submit if 4-digit year is valid
+        if (newValue.length == 4 && isYearValid(newValue)) {
+            if (isInputValid()) submit()
         }
-
-        if (isInputValid()) submit()
     }
 
     Column {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(dayFocus)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            onDayChange(state.dayOfMonth)
-                        }
-                    },
+                modifier = Modifier.weight(1f).focusRequester(dayFocus),
                 value = state.dayOfMonth,
                 onValueChange = ::dayValueChange,
-                label = { Text(text = stringResource(R.string.days)) },
+                label = { Text(stringResource(R.string.days)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
@@ -141,35 +130,22 @@ fun InputDateOfBirth(
             )
 
             OutlinedTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(monthFocus)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            onMonthChange(state.month)
-                        }
-                    },
+                modifier = Modifier.weight(1f).focusRequester(monthFocus),
                 value = state.month,
                 onValueChange = ::monthValueChange,
-                label = { Text(text = stringResource(R.string.months)) },
+                label = { Text(stringResource(R.string.months)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
                 )
             )
 
             OutlinedTextField(
-                modifier = Modifier
-                    .weight(1.2f)
-                    .focusRequester(yearFocus)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            onYearChange(state.year)
-                        }
-                    },
+                modifier = Modifier.weight(1.2f).focusRequester(yearFocus),
                 value = state.year,
                 onValueChange = ::yearValueChange,
-                label = { Text(text = stringResource(R.string.years)) },
+                label = { Text(stringResource(R.string.years)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
@@ -179,37 +155,31 @@ fun InputDateOfBirth(
             )
 
             Box(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .clickable {
-                        showDatePicker(context) { selectedDate ->
-                            onDateOfBirthChange(selectedDate)
-                        }
+                modifier = Modifier.align(Alignment.CenterVertically).clickable {
+                    showDatePicker(context) { selectedDate ->
+                        onDateOfBirthChange(selectedDate)
                     }
+                }
             ) {
                 Image(
-                    modifier = Modifier
-                        .padding(start = 8.dp),
-                    painter = painterResource(id = R.drawable.ic_clander),
-                    contentDescription = "Date Picker Icon"
+                    painter = painterResource(R.drawable.ic_clander),
+                    contentDescription = "Date Picker Icon",
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
         }
 
-        state.error?.let {
+        state.error?.let { errorMsg ->
             AssistChip(
                 onClick = {},
-                label = { Text(it) },
+                label = { Text(errorMsg) },
                 colors = AssistChipDefaults.assistChipColors(
                     containerColor = MaterialTheme.colorScheme.errorContainer,
                     labelColor = MaterialTheme.colorScheme.onErrorContainer
                 ),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-        }
-
-        ContentSpacer()
+        } ?: ContentSpacer()
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -219,17 +189,13 @@ fun InputDateOfBirth(
                 modifier = Modifier.weight(1f),
                 onClick = ::submit,
                 shape = RoundedCornerShape(12.dp)
-            ) {
-                Text("Check Age")
-            }
+            ) { Text(stringResource(R.string.check_age)) }
 
             OutlinedButton(
                 modifier = Modifier.weight(1f),
                 onClick = onReset,
                 shape = RoundedCornerShape(12.dp)
-            ) {
-                Text("Reset")
-            }
+            ) { Text(stringResource(R.string.reset)) }
         }
     }
 }

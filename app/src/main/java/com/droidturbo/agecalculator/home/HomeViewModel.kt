@@ -2,12 +2,11 @@ package com.droidturbo.agecalculator.home
 
 import androidx.lifecycle.ViewModel
 import com.droidturbo.agecalculator.utils.calculateAge
-import com.droidturbo.agecalculator.utils.isValidDate
+import com.droidturbo.agecalculator.utils.validDateFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,49 +28,26 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onDateOfBirthChange(value: String) {
+        val (year, month, day) = value.split("-")
         _state.update {
-            it.copy(
-                year = value.split("-")[0],
-                month = value.split("-")[1],
-                dayOfMonth = value.split("-")[2],
-            )
+            it.copy(year = year, month = month, dayOfMonth = day)
         }
     }
 
     fun calculate() {
         val current = _state.value
 
-        val day = current.dayOfMonth.toIntOrNull()
-        val month = current.month.toIntOrNull()
-        val year = current.year.toIntOrNull()
+        validDateFormat(
+            year = current.year,
+            month = current.month,
+            dayOfMonth = current.dayOfMonth
+        )?.let { birthday ->
+            val (age, nextBirthday, totalInfo) = calculateAge(birthday = birthday)
+            _state.update { it.copy(age = age, nextBirthday = nextBirthday, totalInfo = totalInfo) }
+        } ?: _state.update { it.copy(error = "Invalid date") }
+    }
 
-        when {
-            day == null || day !in 1..31 -> {
-                _state.update { it.copy(error = "Invalid day") }
-            }
-
-            month == null || month !in 1..12 -> {
-                _state.update { it.copy(error = "Invalid month") }
-            }
-
-            year == null || year !in 1900..LocalDate.now().year -> {
-                _state.update { it.copy(error = "Invalid year") }
-            }
-
-            isValidDate(day, month, year) != null -> {
-                _state.update { it.copy(error = "Invalid date") }
-            }
-
-            else -> {
-                _state.update { it.copy(error = null) }
-            }
-        }
-
-        val date = runCatching { LocalDate.of(year ?: 0, month ?: 0, day ?: 0) }.getOrNull()
-            ?: return
-
-        _state.update {
-            it.calculateAge(date)
-        }
+    fun reset() {
+        _state.value = HomeState()
     }
 }
