@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.droidturbo.agecalculator.home.HomeState
+import com.droidturbo.agecalculator.data.HomeAgeModel
 import com.droidturbo.agecalculator.ui.content.CardBlock
 import com.droidturbo.agecalculator.ui.content.ThreeColumnField
 import com.droidturbo.agecalculator.ui.content.ThreeColumnTitle
@@ -17,7 +18,7 @@ import com.droidturbo.agecalculator.ui.content.TitleBlock
 
 @Composable
 fun AgeContainer(
-    state: HomeState = HomeState()
+    ageModel: HomeAgeModel = HomeAgeModel()
 ) {
     CardBlock {
         Column(
@@ -27,12 +28,14 @@ fun AgeContainer(
         ) {
             TitleBlock(text = "Your age is")
             ThreeColumnTitle("Year", "Month", "Days")
-            ThreeColumnField(state.age.ageYear, state.age.ageMonth, state.age.ageDay)
+            ThreeColumnField(ageModel.ageYear, ageModel.ageMonth, ageModel.ageDay)
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
+
+@Preview(showBackground = true)
 @Composable
 fun AgeContainerPreview() {
     AgeContainer()

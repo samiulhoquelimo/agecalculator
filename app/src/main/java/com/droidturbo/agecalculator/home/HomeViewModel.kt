@@ -1,6 +1,8 @@
 package com.droidturbo.agecalculator.home
 
 import androidx.lifecycle.ViewModel
+import com.droidturbo.agecalculator.R
+import com.droidturbo.agecalculator.utils.UiText
 import com.droidturbo.agecalculator.utils.calculateAge
 import com.droidturbo.agecalculator.utils.validDateFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,9 +44,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             month = current.month,
             dayOfMonth = current.dayOfMonth
         )?.let { birthday ->
-            val (age, nextBirthday, totalInfo) = calculateAge(birthday = birthday)
-            _state.update { it.copy(age = age, nextBirthday = nextBirthday, totalInfo = totalInfo) }
-        } ?: _state.update { it.copy(error = "Invalid date") }
+            _state.update { it.copy(result = calculateAge(birthday = birthday)) }
+        } ?: _state.update { it.copy(error = UiText.StringResource(R.string.invalid_date)) }
     }
 
     fun reset() {

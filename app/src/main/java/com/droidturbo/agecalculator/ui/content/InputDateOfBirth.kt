@@ -42,6 +42,7 @@ import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.ui.theme.AppTypography
 import com.droidturbo.agecalculator.ui.theme.lightScheme
+import com.droidturbo.agecalculator.utils.UiText
 import com.droidturbo.agecalculator.utils.isDayOfMonthValid
 import com.droidturbo.agecalculator.utils.isMonthValid
 import com.droidturbo.agecalculator.utils.isYearValid
@@ -128,6 +129,7 @@ fun InputDateOfBirth(
                 onValueChange = { dayValueChange(it.text) },
                 label = { Text(stringResource(R.string.days)) },
                 singleLine = true,
+                maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
@@ -146,6 +148,7 @@ fun InputDateOfBirth(
                 onValueChange = { monthValueChange(it.text) },
                 label = { Text(stringResource(R.string.months)) },
                 singleLine = true,
+                maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
@@ -163,6 +166,7 @@ fun InputDateOfBirth(
                 onValueChange = { yearValueChange(it.text) },
                 label = { Text(stringResource(R.string.years)) },
                 singleLine = true,
+                maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -194,7 +198,7 @@ fun InputDateOfBirth(
 
         state.error?.let { errorMsg ->
             Text(
-                text = errorMsg,
+                text = errorMsg.asString(),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
@@ -234,7 +238,7 @@ fun InputDateOfBirthPreview() {
         colorScheme = lightScheme,
         typography = AppTypography,
         content = {
-            InputDateOfBirth(state = HomeState(error = "Invalid date"))
+            InputDateOfBirth(state = HomeState(error = UiText.StringResource(R.string.invalid_date)))
         }
     )
 }

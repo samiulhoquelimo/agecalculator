@@ -16,6 +16,7 @@ import com.droidturbo.agecalculator.ui.content.InputDateOfBirth
 import com.droidturbo.agecalculator.ui.content.TitleBlock
 import com.droidturbo.agecalculator.ui.theme.AppTypography
 import com.droidturbo.agecalculator.ui.theme.lightScheme
+import com.droidturbo.agecalculator.utils.UiText
 
 @Composable
 fun DateInputContainer(
@@ -54,7 +55,7 @@ fun DateInputContainerPreview() {
         content = {
             DateInputContainer(
                 state = HomeState(
-                    error = "Invalid date"
+                    error = UiText.StringResource(R.string.invalid_date)
                 )
             )
         }

@@ -71,20 +71,28 @@ fun HomeScreenContent(
             onReset = onReset
         )
         ContentSpacer()
-        AgeContainer(state = state)
-        ContentSpacer()
-        BirthdayContainer(state = state)
-        ContentSpacer()
-        TotalInfoContainer(state = state)
-        ContentSpacer()
+        state.result?.let {
+            val (ageModel, nextBirthday, totalInfo) = state.result
+            Divider()
+            ContentSpacer()
+            AgeContainer(ageModel = ageModel)
+            ContentSpacer()
+            BirthdayContainer(nextBirthday = nextBirthday)
+            ContentSpacer()
+            TotalInfoContainer(totalInfo = totalInfo)
+            ContentSpacer()
+        }
     }
 }
+
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     MaterialTheme(
-        colorScheme = lightScheme, typography = AppTypography, content = {
+        colorScheme = lightScheme,
+        typography = AppTypography,
+        content = {
             Scaffold(
                 modifier = Modifier
                     .fillMaxSize()
@@ -96,5 +104,6 @@ fun HomeScreenPreview() {
                     modifier = Modifier.padding(paddingValues = innerPadding)
                 )
             }
-        })
+        }
+    )
 }
