@@ -1,7 +1,7 @@
 package com.droidturbo.agecalculator.ui.content
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -67,9 +69,36 @@ fun InputDateOfBirth(
     val monthFocus = remember { FocusRequester() }
     val yearFocus = remember { FocusRequester() }
 
-    var dayValue by remember { mutableStateOf(TextFieldValue(state.dayOfMonth)) }
-    var monthValue by remember { mutableStateOf(TextFieldValue(state.month)) }
-    var yearValue by remember { mutableStateOf(TextFieldValue(state.year)) }
+    var userTappedDay by remember { mutableStateOf(false) }
+    var userTappedMonth by remember { mutableStateOf(false) }
+    var userTappedYear by remember { mutableStateOf(false) }
+
+    var dayValue by remember(state.dayOfMonth) {
+        mutableStateOf(
+            TextFieldValue(
+                state.dayOfMonth,
+                selection = TextRange(state.dayOfMonth.length)
+            )
+        )
+    }
+
+    var monthValue by remember(state.month) {
+        mutableStateOf(
+            TextFieldValue(
+                state.month,
+                selection = TextRange(state.month.length)
+            )
+        )
+    }
+
+    var yearValue by remember(state.year) {
+        mutableStateOf(
+            TextFieldValue(
+                state.year,
+                selection = TextRange(state.year.length)
+            )
+        )
+    }
 
     fun isInputValid() = validator(
         dayOfMonth = dayValue.text,
@@ -85,31 +114,55 @@ fun InputDateOfBirth(
         }
     }
 
+    fun requestNextIncompleteField() {
+        when {
+            dayValue.text.isEmpty() -> dayFocus.requestFocus()
+            monthValue.text.isEmpty() -> monthFocus.requestFocus()
+            yearValue.text.isEmpty() -> yearFocus.requestFocus()
+        }
+    }
+
     fun dayValueChange(newText: String) {
         if (newText.length > 2) return
+
         dayValue = TextFieldValue(newText, selection = TextRange(newText.length))
         onDayChange(newText)
 
         val day = newText.toIntOrNull() ?: return
-        if (day > 3 || isDayOfMonthValid(newText)) monthFocus.requestFocus()
+
+        val shouldMoveFocus =
+            newText.length == 2 || (newText.length == 1 && day >= 4)
+
+        if (shouldMoveFocus && isDayOfMonthValid(newText)) {
+            monthFocus.requestFocus()
+        }
     }
 
     fun monthValueChange(newText: String) {
         if (newText.length > 2) return
+
         monthValue = TextFieldValue(newText, selection = TextRange(newText.length))
         onMonthChange(newText)
 
         val month = newText.toIntOrNull() ?: return
-        if (month > 1 || isMonthValid(newText)) yearFocus.requestFocus()
+
+        val shouldMoveFocus =
+            newText.length == 2 || (newText.length == 1 && month >= 2)
+
+        if (shouldMoveFocus && isMonthValid(newText)) {
+            yearFocus.requestFocus()
+        }
     }
 
     fun yearValueChange(newText: String) {
         if (newText.length > 4) return
+
         yearValue = TextFieldValue(newText, selection = TextRange(newText.length))
         onYearChange(newText)
 
-        newText.toIntOrNull() ?: return
-        if (newText.length == 4 && isYearValid(newText)) submit()
+        if (newText.length == 4 && isYearValid(newText)) {
+            submit()
+        }
     }
 
     Column {
@@ -118,55 +171,88 @@ fun InputDateOfBirth(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
+            // DAY
             OutlinedTextField(
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(dayFocus)
-                    .clickable {
-                        dayValue = dayValue.copy(selection = TextRange(0, dayValue.text.length))
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            userTappedDay = true
+                            dayFocus.requestFocus()
+                        }
+                    }
+                    .onFocusChanged {
+                        if (it.isFocused && userTappedDay) {
+                            dayValue = dayValue.copy(
+                                selection = TextRange(0, dayValue.text.length)
+                            )
+                            userTappedDay = false
+                        }
                     },
                 value = dayValue,
                 onValueChange = { dayValueChange(it.text) },
                 label = { Text(stringResource(R.string.days)) },
                 singleLine = true,
-                maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 )
             )
 
+            // MONTH
             OutlinedTextField(
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(monthFocus)
-                    .clickable {
-                        monthValue =
-                            monthValue.copy(selection = TextRange(0, monthValue.text.length))
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            userTappedMonth = true
+                            monthFocus.requestFocus()
+                        }
+                    }
+                    .onFocusChanged {
+                        if (it.isFocused && userTappedMonth) {
+                            monthValue = monthValue.copy(
+                                selection = TextRange(0, monthValue.text.length)
+                            )
+                            userTappedMonth = false
+                        }
                     },
                 value = monthValue,
                 onValueChange = { monthValueChange(it.text) },
                 label = { Text(stringResource(R.string.months)) },
                 singleLine = true,
-                maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
                 )
             )
 
+            // YEAR
             OutlinedTextField(
                 modifier = Modifier
-                    .weight(1.2f)
+                    .weight(1f)
                     .focusRequester(yearFocus)
-                    .clickable {
-                        yearValue = yearValue.copy(selection = TextRange(0, yearValue.text.length))
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            userTappedYear = true
+                            yearFocus.requestFocus()
+                        }
+                    }
+                    .onFocusChanged {
+                        if (it.isFocused && userTappedYear) {
+                            yearValue = yearValue.copy(
+                                selection = TextRange(0, yearValue.text.length)
+                            )
+                            userTappedYear = false
+                        }
                     },
                 value = yearValue,
                 onValueChange = { yearValueChange(it.text) },
                 label = { Text(stringResource(R.string.years)) },
                 singleLine = true,
-                maxLines = 1,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -174,18 +260,25 @@ fun InputDateOfBirth(
                 keyboardActions = KeyboardActions(onDone = { submit() })
             )
 
+            // DATE PICKER
             IconButton(
                 onClick = {
                     showDatePicker(context) { selectedDate ->
+                        val (y, m, d) = selectedDate.split("-")
+
+                        onDayChange(d)
+                        onMonthChange(m)
+                        onYearChange(y)
                         onDateOfBirthChange(selectedDate)
+
+                        requestNextIncompleteField()
                     }
                 },
                 modifier = Modifier
                     .size(48.dp)
-                    .align(Alignment.CenterVertically)
                     .background(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(8.dp)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        RoundedCornerShape(8.dp)
                     )
             ) {
                 Icon(
@@ -196,16 +289,16 @@ fun InputDateOfBirth(
             }
         }
 
-        state.error?.let { errorMsg ->
+        state.error?.let {
             Text(
-                text = errorMsg.asString(),
+                text = it.asString(),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 8.dp)
             )
-        } ?: ContentSpacer()
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -215,21 +308,21 @@ fun InputDateOfBirth(
                 modifier = Modifier.weight(1f),
                 onClick = { submit() },
                 shape = RoundedCornerShape(12.dp)
-            ) { Text(stringResource(R.string.check_age)) }
+            ) {
+                Text(stringResource(R.string.check_age))
+            }
 
             OutlinedButton(
                 modifier = Modifier.weight(1f),
-                onClick = {
-                    onReset()
-                    dayValue = TextFieldValue("")
-                    monthValue = TextFieldValue("")
-                    yearValue = TextFieldValue("")
-                },
+                onClick = onReset,
                 shape = RoundedCornerShape(12.dp)
-            ) { Text(stringResource(R.string.reset)) }
+            ) {
+                Text(stringResource(R.string.reset))
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
