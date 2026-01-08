@@ -37,9 +37,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.home.HomeState
-import com.droidturbo.agecalculator.ui.theme.AppTypography
-import com.droidturbo.agecalculator.ui.theme.lightScheme
-import com.droidturbo.agecalculator.utils.UiText
 import com.droidturbo.agecalculator.utils.formatDob
 import com.droidturbo.agecalculator.utils.isValidDob
 import com.droidturbo.agecalculator.utils.showDatePicker
@@ -47,7 +44,7 @@ import java.time.LocalDate
 
 @Composable
 fun InputDateOfBirth(
-    state: HomeState,
+    state: HomeState = HomeState(),
     onDayChange: (String) -> Unit = {},
     onMonthChange: (String) -> Unit = {},
     onYearChange: (String) -> Unit = {},
@@ -219,15 +216,5 @@ fun InputDateOfBirth(
 @Preview(showBackground = true)
 @Composable
 fun InputDateOfBirthPreview() {
-    MaterialTheme(
-        colorScheme = lightScheme,
-        typography = AppTypography,
-        content = {
-            InputDateOfBirth(
-                state = HomeState(
-                    error = UiText.StringResource(R.string.invalid_date)
-                )
-            )
-        }
-    )
+    InputDateOfBirth()
 }
