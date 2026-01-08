@@ -37,9 +37,7 @@ fun DateInputContainer(
                 onDayChange = onDayChange,
                 onMonthChange = onMonthChange,
                 onYearChange = onYearChange,
-                onDateOfBirthChange = onDateOfBirthChange,
                 onSubmit = onSubmit,
-                onReset = onReset
             )
             ContentSpacer()
         }

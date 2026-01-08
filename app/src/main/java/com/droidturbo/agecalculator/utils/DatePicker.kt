@@ -1,14 +1,15 @@
 package com.droidturbo.agecalculator.utils
 
 import android.content.Context
-import java.util.Calendar
+import java.time.LocalDate
 import java.util.Locale
 
 fun showDatePicker(
     context: Context,
+    initialDate: LocalDate?,
     onDateSelected: (String) -> Unit
 ) {
-    val calendar = Calendar.getInstance()
+    val date = initialDate ?: LocalDate.now()
 
     android.app.DatePickerDialog(
         context,
@@ -22,8 +23,8 @@ fun showDatePicker(
             )
             onDateSelected(formattedDate)
         },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
+        date.year,
+        date.monthValue - 1,
+        date.dayOfMonth
     ).show()
 }

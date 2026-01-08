@@ -2,28 +2,28 @@ package com.droidturbo.agecalculator.utils
 
 import java.time.LocalDate
 
-fun isDayOfMonthValid(dayOfMonth: String): Boolean {
-    val dayOfMonth = dayOfMonth.toIntOrNull() ?: 0
-    return dayOfMonth in 1..31
+fun isValidDob(day: String, month: String, year: String): Boolean {
+    return try {
+        val dob = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+        val today = LocalDate.now()
+        dob.isBefore(today) || dob.isEqual(today)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
+    }
 }
 
-fun isMonthValid(month: String): Boolean {
-    val month = month.toIntOrNull() ?: 0
-    return month in 1..12
-}
+fun formatDob(digits: String): String {
+    val clean = digits.filter { it.isDigit() }.take(8)
 
-fun isYearValid(year: String): Boolean {
-    val year = year.toIntOrNull() ?: 0
-    return year in 1900..LocalDate.now().year
-}
+    val day = clean.take(2)
+    val month = clean.drop(2).take(2)
+    val year = clean.drop(4).take(4)
 
-fun validator(year: String, month: String, dayOfMonth: String): Boolean {
-    return when {
-        !isDayOfMonthValid(dayOfMonth = dayOfMonth) -> false
-        !isMonthValid(month = month) -> false
-        !isYearValid(year = year) -> false
-        validDateFormat(year = year, month = month, dayOfMonth = dayOfMonth) == null -> false
-        else -> true
+    return buildString {
+        if (day.isNotEmpty()) append(day)
+        if (month.isNotEmpty()) append(" / ").append(month)
+        if (year.isNotEmpty()) append(" / ").append(year)
     }
 }
 
