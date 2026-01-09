@@ -16,13 +16,21 @@ import com.droidturbo.agecalculator.ui.content.AppCard
 fun BirthdayContainer(
     nextBirthday: HomeNextBirthdayModel = HomeNextBirthdayModel()
 ) {
-    AppCard(title = stringResource(R.string.next_birthday)) {
+    AppCard(
+        title = stringResource(R.string.next_birthday)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            AgeItem(label = stringResource(id = R.string.months), value = nextBirthday.bdMonth)
-            AgeItem(label = stringResource(id = R.string.days), value = nextBirthday.bdDay)
+            AgeItem(
+                label = stringResource(id = R.string.months),
+                value = nextBirthday.bdMonth
+            )
+            AgeItem(
+                label = stringResource(id = R.string.days),
+                value = nextBirthday.bdDay
+            )
         }
     }
 }

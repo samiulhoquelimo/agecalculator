@@ -60,12 +60,10 @@ fun HomeScreenContent(
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(DividerColor)
-        )
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(DividerColor))
         Spacer(modifier = Modifier.height(16.dp))
         DateInputContainer(
             state = state,
@@ -102,7 +100,8 @@ fun HomeScreenPreview() {
                 containerColor = MaterialTheme.colorScheme.primaryContainer
             ) { innerPadding ->
                 HomeScreenContent(
-                    modifier = Modifier.padding(paddingValues = innerPadding)
+                    modifier = Modifier
+                        .padding(paddingValues = innerPadding)
                 )
             }
         }

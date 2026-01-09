@@ -23,9 +23,18 @@ fun AgeContainer(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            AgeItem(label = stringResource(id = R.string.years), value = ageModel.ageYear)
-            AgeItem(label = stringResource(id = R.string.months), value = ageModel.ageMonth)
-            AgeItem(label = stringResource(id = R.string.days), value = ageModel.ageDay)
+            AgeItem(
+                label = stringResource(id = R.string.years),
+                value = ageModel.ageYear
+            )
+            AgeItem(
+                label = stringResource(id = R.string.months),
+                value = ageModel.ageMonth
+            )
+            AgeItem(
+                label = stringResource(id = R.string.days),
+                value = ageModel.ageDay
+            )
         }
     }
 }

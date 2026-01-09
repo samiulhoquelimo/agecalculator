@@ -18,14 +18,22 @@ import com.droidturbo.agecalculator.ui.content.AppCard
 fun TotalInfoContainer(
     totalInfo: HomeTotalModel = HomeTotalModel()
 ) {
-    AppCard(title = stringResource(R.string.some_extra_information)) {
+    AppCard(
+        title = stringResource(R.string.some_extra_information)
+    ) {
         totalInfo.toData().forEach { (label, value) ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(label, style = MaterialTheme.typography.bodyMedium)
-                Text(value, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }
