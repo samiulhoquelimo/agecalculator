@@ -141,8 +141,9 @@ fun InputDateOfBirth(
         }
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,

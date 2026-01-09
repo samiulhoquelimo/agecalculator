@@ -20,6 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.HomeDataModel
+import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
+import com.droidturbo.agecalculator.data.HomeTotalModel
 import com.droidturbo.agecalculator.ui.container.AgeContainer
 import com.droidturbo.agecalculator.ui.container.BirthdayContainer
 import com.droidturbo.agecalculator.ui.container.DateInputContainer
@@ -60,10 +64,12 @@ fun HomeScreenContent(
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(DividerColor))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(DividerColor)
+        )
         Spacer(modifier = Modifier.height(16.dp))
         DateInputContainer(
             state = state,
@@ -73,14 +79,17 @@ fun HomeScreenContent(
             onSubmit = onSubmit
         )
         Spacer(modifier = Modifier.height(16.dp))
-        state.result?.let { (age, birthday, total) ->
-            AgeContainer(age)
-            Spacer(modifier = Modifier.height(16.dp))
-            BirthdayContainer(birthday)
-            Spacer(modifier = Modifier.height(16.dp))
-            TotalInfoContainer(total)
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+
+        val age = state.result?.age ?: HomeAgeModel()
+        val birthday = state.result?.nextBirthday ?: HomeNextBirthdayModel()
+        val total = state.result?.totalInfo ?: HomeTotalModel()
+
+        AgeContainer(age)
+        Spacer(modifier = Modifier.height(16.dp))
+        BirthdayContainer(birthday)
+        Spacer(modifier = Modifier.height(16.dp))
+        TotalInfoContainer(total)
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
@@ -101,7 +110,13 @@ fun HomeScreenPreview() {
             ) { innerPadding ->
                 HomeScreenContent(
                     modifier = Modifier
-                        .padding(paddingValues = innerPadding)
+                        .padding(paddingValues = innerPadding),
+                    state = HomeState(
+                        dayOfMonth = "01",
+                        month = "01",
+                        year = "2000",
+                        result = HomeDataModel()
+                    )
                 )
             }
         }

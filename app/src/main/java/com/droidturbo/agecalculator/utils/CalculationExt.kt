@@ -6,7 +6,9 @@ import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
 import com.droidturbo.agecalculator.data.HomeTotalModel
 import java.time.LocalDate
 import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 /**
 If the unit is a ChronoUnit then the query is implemented here.
@@ -61,9 +63,27 @@ private fun nextBirthdayPeriod(birthday: LocalDate): Period {
     return Period.between(today, nextBirthday)
 }
 
+private val nextBirthdayFormatter =
+    DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.getDefault())
+
+fun nextBirthdayDate(birthday: LocalDate): LocalDate {
+    val today = today()
+
+    val thisYearBirthday = birthday.withYear(today.year)
+
+    return if (!thisYearBirthday.isBefore(today)) {
+        thisYearBirthday
+    } else {
+        thisYearBirthday.plusYears(1)
+    }
+}
+
 fun calculateAge(birthday: LocalDate): HomeDataModel {
     val agePeriod = Period.between(birthday, today())
     val nextBirthdayPeriod = nextBirthdayPeriod(birthday)
+
+    val nextBirthdayDate = nextBirthdayDate(birthday)
+    val formattedNextBirthday = nextBirthdayDate.format(nextBirthdayFormatter)
 
     val age = HomeAgeModel(
         ageYear = agePeriod.years,
@@ -74,6 +94,7 @@ fun calculateAge(birthday: LocalDate): HomeDataModel {
     val nextBirthday = HomeNextBirthdayModel(
         bdMonth = nextBirthdayPeriod.months,
         bdDay = nextBirthdayPeriod.days,
+        bdDate = formattedNextBirthday
     )
 
     val totalInfo = HomeTotalModel(
