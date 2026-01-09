@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">বয়স ক্যালকুলেটর</string>
-    <string name="general_error">কিছু সমস্যার সম্মুখীন হয়েছে</string>
+    <string name="general_error">কিছু সমস্যা হয়েছে</string>
     <string name="enter_your_date_of_birth">আপনার জন্ম তারিখ লিখুন</string>
     <string name="invalid_date">ভুল তারিখ</string>
     <string name="date_of_birth">জন্ম তারিখ</string>
@@ -10,9 +10,9 @@
     <string name="check_age">বয়স যাচাই করুন</string>
     <string name="reset">পুনরায় সেট করুন</string>
     <string name="next_birthday">পরবর্তী জন্মদিন</string>
-    <string name="some_extra_information">কিছু অতিরিক্ত তথ্য</string>
+    <string name="some_extra_information">অতিরিক্ত তথ্য</string>
     <string name="your_age_is">আপনার বয়স</string>
-    <string name="please_enter_valid_date">অনুগ্রহ করে একটি বৈধ তারিখ লিখুন (ভবিষ্যতের নয়)</string>
+    <string name="please_enter_valid_date">দয়া করে একটি বৈধ তারিখ লিখুন (ভবিষ্যতের নয়)</string>
     <string name="pick_date">তারিখ নির্বাচন করুন</string>
     <string name="dd_mm_yyyy">DD / MM / YYYY</string>
     <string name="clear">মুছে ফেলুন</string>
