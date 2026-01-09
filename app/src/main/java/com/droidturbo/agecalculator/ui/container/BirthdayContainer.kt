@@ -39,14 +39,11 @@ fun BirthdayContainer(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
-            // Month / Day row
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(vertical = 12.dp),
+                    .background(MaterialTheme.colorScheme.surface),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 AgeItem(
