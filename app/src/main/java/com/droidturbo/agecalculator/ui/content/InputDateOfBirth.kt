@@ -49,7 +49,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.TextStyle
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
@@ -106,26 +106,28 @@ fun InputDateOfBirth(
         }
     }
 
-    val validLocalDate = remember(state.dayOfMonth, state.month, state.year) {
+    val formattedFullDate = remember(state.dayOfMonth, state.month, state.year) {
         runCatching {
             if (
                 state.dayOfMonth.length == 2 &&
                 state.month.length == 2 &&
                 state.year.length == 4
             ) {
-                LocalDate.of(
+                val date = LocalDate.of(
                     state.year.toInt(),
                     state.month.toInt(),
                     state.dayOfMonth.toInt()
                 )
+
+                val formatter = DateTimeFormatter.ofPattern(
+                    "EEEE, dd MMMM yyyy",
+                    Locale.getDefault()
+                )
+
+                date.format(formatter)
             } else null
         }.getOrNull()
     }
-
-    val dayOfWeekName = validLocalDate
-        ?.dayOfWeek
-        ?.getDisplayName(TextStyle.FULL, Locale.getDefault())
-
 
     fun submitIfValid(day: String, month: String, year: String) {
         if (isValidDob(day, month, year)) {
@@ -243,12 +245,18 @@ fun InputDateOfBirth(
             shape = RoundedCornerShape(12.dp)
         )
 
-        Text(
-            text = dayOfWeekName ?: "",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+        AnimatedVisibility(
+            visible = formattedFullDate != null && !showError,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            Text(
+                text = formattedFullDate ?: "",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
 
         AnimatedVisibility(
             visible = showError,
