@@ -49,6 +49,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Composable
 fun InputDateOfBirth(
@@ -103,6 +105,27 @@ fun InputDateOfBirth(
             )
         }
     }
+
+    val validLocalDate = remember(state.dayOfMonth, state.month, state.year) {
+        runCatching {
+            if (
+                state.dayOfMonth.length == 2 &&
+                state.month.length == 2 &&
+                state.year.length == 4
+            ) {
+                LocalDate.of(
+                    state.year.toInt(),
+                    state.month.toInt(),
+                    state.dayOfMonth.toInt()
+                )
+            } else null
+        }.getOrNull()
+    }
+
+    val dayOfWeekName = validLocalDate
+        ?.dayOfWeek
+        ?.getDisplayName(TextStyle.FULL, Locale.getDefault())
+
 
     fun submitIfValid(day: String, month: String, year: String) {
         if (isValidDob(day, month, year)) {
@@ -218,6 +241,13 @@ fun InputDateOfBirth(
             },
             isError = showError,
             shape = RoundedCornerShape(12.dp)
+        )
+
+        Text(
+            text = dayOfWeekName ?: "",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(start = 16.dp)
         )
 
         AnimatedVisibility(
