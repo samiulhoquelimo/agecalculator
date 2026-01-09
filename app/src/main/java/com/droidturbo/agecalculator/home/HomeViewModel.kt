@@ -16,26 +16,32 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     val state = _state.asStateFlow()
 
     fun updateDay(value: String) {
-        _state.update { it.copy(dayOfMonth = value) }
+        _state.update { it.copy(dayOfMonth = value, result = null) }
     }
 
     fun updateMonth(value: String) {
-        _state.update { it.copy(month = value) }
+        _state.update { it.copy(month = value, result = null) }
     }
 
     fun updateYear(value: String) {
-        _state.update { it.copy(year = value) }
+        _state.update { it.copy(year = value, result = null) }
     }
 
     fun calculate() {
         val current = _state.value
 
-        validDateFormat(
+        val birthday = validDateFormat(
             year = current.year,
             month = current.month,
             dayOfMonth = current.dayOfMonth
-        )?.let { birthday ->
-            _state.update { it.copy(result = calculateAge(birthday = birthday)) }
+        )
+
+        _state.update {
+            it.copy(
+                result = birthday?.let { date ->
+                    calculateAge(birthday = date)
+                }
+            )
         }
     }
 }

@@ -1,6 +1,10 @@
 package com.droidturbo.agecalculator.ui.content
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +45,9 @@ import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.utils.formatDob
 import com.droidturbo.agecalculator.utils.isValidDob
 import com.droidturbo.agecalculator.utils.showDatePicker
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @Composable
@@ -54,15 +62,18 @@ fun InputDateOfBirth(
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val coroutineScope = rememberCoroutineScope()
 
     var showError by remember { mutableStateOf(false) }
+    var autoSubmitJob by remember { mutableStateOf<Job?>(null) }
 
     val digits = state.dayOfMonth + state.month + state.year
     val formattedText = formatDob(digits)
 
     val selectedLocalDate = remember(state.dayOfMonth, state.month, state.year) {
         runCatching {
-            if (state.dayOfMonth.length == 2 &&
+            if (
+                state.dayOfMonth.length == 2 &&
                 state.month.length == 2 &&
                 state.year.length == 4
             ) {
@@ -104,14 +115,13 @@ fun InputDateOfBirth(
         }
     }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
             onValueChange = { newValue ->
-                val cleanDigits = newValue.text.filter { it.isDigit() }.take(8)
+                val cleanDigits = newValue.text.filter(Char::isDigit).take(8)
                 val formatted = formatDob(cleanDigits)
 
                 val day = cleanDigits.take(2)
@@ -127,10 +137,14 @@ fun InputDateOfBirth(
                 onMonthChange(month)
                 onYearChange(year)
 
+                showError = false
+                autoSubmitJob?.cancel()
+
                 if (cleanDigits.length == 8) {
-                    submitIfValid(day, month, year)
-                } else {
-                    showError = false
+                    autoSubmitJob = coroutineScope.launch {
+                        delay(300)
+                        submitIfValid(day, month, year)
+                    }
                 }
             },
             label = { Text(stringResource(R.string.date_of_birth)) },
@@ -142,20 +156,17 @@ fun InputDateOfBirth(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if (digits.length == 8) {
-                        submitIfValid(
-                            day = state.dayOfMonth,
-                            month = state.month,
-                            year = state.year
-                        )
-                    } else {
-                        showError = true
-                    }
+                    submitIfValid(
+                        state.dayOfMonth,
+                        state.month,
+                        state.year
+                    )
                 }
             ),
             trailingIcon = {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     if (textFieldValue.text.isNotEmpty()) {
                         IconButton(
@@ -168,7 +179,11 @@ fun InputDateOfBirth(
                                 onDateOfBirthChange("")
                             }
                         ) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear")
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = stringResource(R.string.clear),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
 
@@ -205,7 +220,11 @@ fun InputDateOfBirth(
             shape = RoundedCornerShape(12.dp)
         )
 
-        AnimatedVisibility(showError) {
+        AnimatedVisibility(
+            visible = showError,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
             Text(
                 text = stringResource(R.string.please_enter_valid_date),
                 color = MaterialTheme.colorScheme.error,

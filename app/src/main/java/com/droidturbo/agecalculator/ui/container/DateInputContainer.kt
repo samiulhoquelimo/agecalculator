@@ -17,7 +17,7 @@ fun DateInputContainer(
     onSubmit: () -> Unit = {},
 ) {
     AppCard(
-        title = stringResource(R.string.next_birthday)
+        title = stringResource(R.string.enter_your_date_of_birth)
     ) {
         InputDateOfBirth(
             state = state,
