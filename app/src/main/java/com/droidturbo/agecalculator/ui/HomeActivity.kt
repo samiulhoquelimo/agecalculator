@@ -1,5 +1,6 @@
 package com.droidturbo.agecalculator.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.droidturbo.agecalculator.AgeCalculatorApp
 import com.droidturbo.agecalculator.home.HomeScreen
 import com.droidturbo.agecalculator.ui.content.TopAppBar
 import com.droidturbo.agecalculator.ui.theme.AppTheme
@@ -33,5 +35,9 @@ class HomeActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AgeCalculatorApp.localeManager?.setLocale(newBase) ?: newBase)
     }
 }

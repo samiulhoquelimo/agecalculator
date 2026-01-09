@@ -9,11 +9,12 @@
     <string name="years">বছর</string>
     <string name="check_age">বয়স যাচাই করুন</string>
     <string name="reset">পুনরায় সেট করুন</string>
-    <string name="next_birthday">Next birthday</string>
-    <string name="some_extra_information">Some extra information</string>
-    <string name="your_age_is">Your age is</string>
-    <string name="please_enter_valid_date">Please enter a valid date (not in the future)</string>
-    <string name="pick_date">Pick date</string>
+    <string name="next_birthday">পরবর্তী জন্মদিন</string>
+    <string name="some_extra_information">কিছু অতিরিক্ত তথ্য</string>
+    <string name="your_age_is">আপনার বয়স</string>
+    <string name="please_enter_valid_date">অনুগ্রহ করে একটি বৈধ তারিখ লিখুন (ভবিষ্যতের নয়)</string>
+    <string name="pick_date">তারিখ নির্বাচন করুন</string>
     <string name="dd_mm_yyyy">DD / MM / YYYY</string>
-    <string name="clear">Clear</string>
+    <string name="clear">মুছে ফেলুন</string>
+    <string name="change_language">ভাষা পরিবর্তন করুন</string>
 </resources>
