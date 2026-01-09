@@ -37,11 +37,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         )
 
         _state.update {
-            it.copy(
-                result = birthday?.let { date ->
-                    calculateAge(birthday = date)
-                }
-            )
+            it.copy(result = birthday?.let { date -> calculateAge(birthday = date) })
         }
     }
 }
