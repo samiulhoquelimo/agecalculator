@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -23,15 +24,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.droidturbo.agecalculator.R
-import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
+import com.droidturbo.agecalculator.data.BirthdayModel
 import com.droidturbo.agecalculator.ui.content.AgeItem
 import com.droidturbo.agecalculator.ui.content.AppCard
 import com.droidturbo.agecalculator.utils.language
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun BirthdayContainer(
-    nextBirthday: HomeNextBirthdayModel = HomeNextBirthdayModel()
+    birthday: BirthdayModel = BirthdayModel()
 ) {
+    val formattedDate = remember(birthday.dayOfMonth, birthday.month, birthday.year) {
+        runCatching {
+            val date = LocalDate.of(birthday.year, birthday.month, birthday.dayOfMonth)
+            val formatter = DateTimeFormatter.ofPattern(
+                "EEEE, dd MMMM yyyy",
+                Locale.getDefault()
+            )
+            date.format(formatter)
+        }.getOrNull()
+    }
+
     AppCard(
         title = stringResource(R.string.next_birthday)
     ) {
@@ -48,20 +63,20 @@ fun BirthdayContainer(
             ) {
                 AgeItem(
                     label = stringResource(id = R.string.months),
-                    value = nextBirthday.bdMonth
+                    value = birthday.periodMonth
                 )
                 AgeItem(
                     label = stringResource(id = R.string.days),
-                    value = nextBirthday.bdDay
+                    value = birthday.periodDay
                 )
             }
             AnimatedVisibility(
-                visible = nextBirthday.bdDate.isNotBlank(),
+                visible = formattedDate != null,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically()
             ) {
                 Text(
-                    text = language(nextBirthday.bdDate),
+                    text = language(formattedDate),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary,
@@ -80,10 +95,12 @@ fun BirthdayContainer(
 @Composable
 fun BirthdayContainerPreview() {
     BirthdayContainer(
-        nextBirthday = HomeNextBirthdayModel(
-            bdMonth = 1,
-            bdDay = 1,
-            bdDate = "EEEE, dd MMMM yyyy"
+        birthday = BirthdayModel(
+            periodMonth = 5,
+            periodDay = 4,
+            dayOfMonth = 1,
+            month = 3,
+            year = 2026
         )
     )
 }

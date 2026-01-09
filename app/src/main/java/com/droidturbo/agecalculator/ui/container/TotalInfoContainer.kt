@@ -16,13 +16,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.droidturbo.agecalculator.R
-import com.droidturbo.agecalculator.data.HomeTotalModel
+import com.droidturbo.agecalculator.data.TotalInfoModel
 import com.droidturbo.agecalculator.data.toData
 import com.droidturbo.agecalculator.ui.content.AppCard
 
 @Composable
 fun TotalInfoContainer(
-    totalInfo: HomeTotalModel = HomeTotalModel()
+    totalInfo: TotalInfoModel = TotalInfoModel()
 ) {
     AppCard(
         title = stringResource(R.string.some_extra_information)

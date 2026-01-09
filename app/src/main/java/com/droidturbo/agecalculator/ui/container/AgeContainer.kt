@@ -13,13 +13,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.droidturbo.agecalculator.R
-import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.AgeModel
 import com.droidturbo.agecalculator.ui.content.AgeItem
 import com.droidturbo.agecalculator.ui.content.AppCard
 
 @Composable
 fun AgeContainer(
-    ageModel: HomeAgeModel = HomeAgeModel()
+    ageModel: AgeModel = AgeModel()
 ) {
     AppCard(
         title = stringResource(R.string.your_age_is)

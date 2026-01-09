@@ -3,7 +3,7 @@ package com.droidturbo.agecalculator.data
 import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.utils.UiText
 
-data class HomeTotalModel(
+data class TotalInfoModel(
     val tYear: Int = 0,
     val tMonth: Int = 0,
     val tWeek: Int = 0,
@@ -13,7 +13,7 @@ data class HomeTotalModel(
     val tSec: Int = 0
 )
 
-fun HomeTotalModel.toData(): List<Pair<UiText, String>> {
+fun TotalInfoModel.toData(): List<Pair<UiText, String>> {
     return arrayListOf(
         UiText.StringResource(R.string.total_year) to tYear.toString(),
         UiText.StringResource(R.string.total_month) to tMonth.toString(),

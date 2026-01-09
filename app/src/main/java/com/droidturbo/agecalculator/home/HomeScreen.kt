@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.AgeModel
 import com.droidturbo.agecalculator.data.HomeDataModel
-import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
-import com.droidturbo.agecalculator.data.HomeTotalModel
+import com.droidturbo.agecalculator.data.BirthdayModel
+import com.droidturbo.agecalculator.data.TotalInfoModel
 import com.droidturbo.agecalculator.ui.container.AgeContainer
 import com.droidturbo.agecalculator.ui.container.BirthdayContainer
 import com.droidturbo.agecalculator.ui.container.DateInputContainer
@@ -80,9 +80,9 @@ fun HomeScreenContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        val age = state.result?.age ?: HomeAgeModel()
-        val birthday = state.result?.nextBirthday ?: HomeNextBirthdayModel()
-        val total = state.result?.totalInfo ?: HomeTotalModel()
+        val age = state.result?.age ?: AgeModel()
+        val birthday = state.result?.nextBirthday ?: BirthdayModel()
+        val total = state.result?.totalInfo ?: TotalInfoModel()
 
         AgeContainer(age)
         Spacer(modifier = Modifier.height(16.dp))

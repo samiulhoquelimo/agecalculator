@@ -1,14 +1,12 @@
 package com.droidturbo.agecalculator.utils
 
-import com.droidturbo.agecalculator.data.HomeAgeModel
+import com.droidturbo.agecalculator.data.AgeModel
+import com.droidturbo.agecalculator.data.BirthdayModel
 import com.droidturbo.agecalculator.data.HomeDataModel
-import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
-import com.droidturbo.agecalculator.data.HomeTotalModel
+import com.droidturbo.agecalculator.data.TotalInfoModel
 import java.time.LocalDate
 import java.time.Period
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.util.Locale
 
 /**
 If the unit is a ChronoUnit then the query is implemented here.
@@ -63,41 +61,33 @@ private fun nextBirthdayPeriod(birthday: LocalDate): Period {
     return Period.between(today, nextBirthday)
 }
 
-private val nextBirthdayFormatter =
-    DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.getDefault())
-
-fun nextBirthdayDate(birthday: LocalDate): LocalDate {
+private fun nextBirthdayDate(birthday: LocalDate): LocalDate {
     val today = today()
-
     val thisYearBirthday = birthday.withYear(today.year)
-
-    return if (!thisYearBirthday.isBefore(today)) {
-        thisYearBirthday
-    } else {
-        thisYearBirthday.plusYears(1)
-    }
+    return if (!thisYearBirthday.isBefore(today)) thisYearBirthday
+    else thisYearBirthday.plusYears(1)
 }
 
 fun calculateAge(birthday: LocalDate): HomeDataModel {
     val agePeriod = Period.between(birthday, today())
     val nextBirthdayPeriod = nextBirthdayPeriod(birthday)
+    val nextBD = nextBirthdayDate(birthday)
 
-    val nextBirthdayDate = nextBirthdayDate(birthday)
-    val formattedNextBirthday = nextBirthdayDate.format(nextBirthdayFormatter)
-
-    val age = HomeAgeModel(
+    val age = AgeModel(
         ageYear = agePeriod.years,
         ageMonth = agePeriod.months,
         ageDay = agePeriod.days,
     )
 
-    val nextBirthday = HomeNextBirthdayModel(
-        bdMonth = nextBirthdayPeriod.months,
-        bdDay = nextBirthdayPeriod.days,
-        bdDate = formattedNextBirthday
+    val nextBirthday = BirthdayModel(
+        periodMonth = nextBirthdayPeriod.months,
+        periodDay = nextBirthdayPeriod.days,
+        dayOfMonth = nextBD.dayOfMonth,
+        month = nextBD.monthValue,
+        year = nextBD.year
     )
 
-    val totalInfo = HomeTotalModel(
+    val totalInfo = TotalInfoModel(
         tYear = agePeriod.years,
         tMonth = agePeriod.toTotalMonths().toInt(),
         tWeek = totalWeek(birthday),
