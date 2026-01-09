@@ -9,4 +9,10 @@
     <string name="years">Years</string>
     <string name="check_age">Check Age</string>
     <string name="reset">Reset</string>
+    <string name="next_birthday">Next birthday</string>
+    <string name="some_extra_information">Some extra information</string>
+    <string name="your_age_is">Your age is</string>
+    <string name="please_enter_valid_date">Please enter a valid date (not in the future)</string>
+    <string name="pick_date">Pick date</string>
+    <string name="dd_mm_yyyy">DD / MM / YYYY</string>
 </resources>

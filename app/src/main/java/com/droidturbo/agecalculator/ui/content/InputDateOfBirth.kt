@@ -134,7 +134,7 @@ fun InputDateOfBirth(
                 }
             },
             label = { Text(stringResource(R.string.date_of_birth)) },
-            placeholder = { Text("DD / MM / YYYY") },
+            placeholder = { Text(stringResource(R.string.dd_mm_yyyy)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
@@ -143,7 +143,11 @@ fun InputDateOfBirth(
             keyboardActions = KeyboardActions(
                 onDone = {
                     if (digits.length == 8) {
-                        submitIfValid(state.dayOfMonth, state.month, state.year)
+                        submitIfValid(
+                            day = state.dayOfMonth,
+                            month = state.month,
+                            year = state.year
+                        )
                     } else {
                         showError = true
                     }
@@ -192,7 +196,7 @@ fun InputDateOfBirth(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_clander),
-                            contentDescription = "Pick date"
+                            contentDescription = stringResource(R.string.pick_date)
                         )
                     }
                 }
@@ -203,7 +207,7 @@ fun InputDateOfBirth(
 
         AnimatedVisibility(showError) {
             Text(
-                text = "Please enter a valid date (not in the future)",
+                text = stringResource(R.string.please_enter_valid_date),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp)

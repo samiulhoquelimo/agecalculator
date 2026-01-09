@@ -1,33 +1,28 @@
 package com.droidturbo.agecalculator.ui.container
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.data.HomeNextBirthdayModel
-import com.droidturbo.agecalculator.ui.content.CardBlock
-import com.droidturbo.agecalculator.ui.content.TitleBlock
-import com.droidturbo.agecalculator.ui.content.TwoColumnField
-import com.droidturbo.agecalculator.ui.content.TwoColumnTitle
+import com.droidturbo.agecalculator.ui.content.AgeItem
+import com.droidturbo.agecalculator.ui.content.AppCard
 
 @Composable
-fun BirthdayContainer(nextBirthday: HomeNextBirthdayModel = HomeNextBirthdayModel()) {
-    CardBlock {
-        Column(
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+fun BirthdayContainer(
+    nextBirthday: HomeNextBirthdayModel = HomeNextBirthdayModel()
+) {
+    AppCard(title = stringResource(R.string.next_birthday)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            TitleBlock(text = "Next birthday")
-            TwoColumnTitle("Month", "Day")
-            TwoColumnField(nextBirthday.bdMonth, nextBirthday.bdDay)
-            Spacer(modifier = Modifier.height(16.dp))
+            AgeItem(label = stringResource(id = R.string.months), value = nextBirthday.bdMonth)
+            AgeItem(label = stringResource(id = R.string.days), value = nextBirthday.bdDay)
         }
     }
 }

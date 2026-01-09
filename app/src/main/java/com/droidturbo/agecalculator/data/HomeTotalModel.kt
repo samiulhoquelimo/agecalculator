@@ -9,3 +9,15 @@ data class HomeTotalModel(
     val tMin: Int = 0,
     val tSec: Int = 0
 )
+
+fun HomeTotalModel.toData(): List<Pair<String, String>> {
+    return arrayListOf(
+        "Total Year" to "$tYear",
+        "Total Month" to "$tMonth",
+        "Total Weeks" to "$tWeek",
+        "Total Days" to "$tDay",
+        "Total Hours" to "$tHour",
+        "Total Minutes" to "$tMin",
+        "Total Seconds" to "$tSec"
+    )
+}

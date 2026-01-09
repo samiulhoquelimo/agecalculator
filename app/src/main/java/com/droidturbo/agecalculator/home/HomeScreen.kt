@@ -1,8 +1,12 @@
 package com.droidturbo.agecalculator.home
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -14,20 +18,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.droidturbo.agecalculator.ui.container.AgeContainer
 import com.droidturbo.agecalculator.ui.container.BirthdayContainer
 import com.droidturbo.agecalculator.ui.container.DateInputContainer
 import com.droidturbo.agecalculator.ui.container.TotalInfoContainer
-import com.droidturbo.agecalculator.ui.content.ContentSpacer
-import com.droidturbo.agecalculator.ui.content.Divider
 import com.droidturbo.agecalculator.ui.content.TopAppBar
 import com.droidturbo.agecalculator.ui.theme.AppTypography
+import com.droidturbo.agecalculator.ui.theme.DividerColor
 import com.droidturbo.agecalculator.ui.theme.lightScheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier, viewModel: HomeViewModel = hiltViewModel()
+    modifier: Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -37,9 +42,7 @@ fun HomeScreen(
         onDayChange = viewModel::updateDay,
         onMonthChange = viewModel::updateMonth,
         onYearChange = viewModel::updateYear,
-        onDateOfBirthChange = viewModel::onDateOfBirthChange,
-        onSubmit = viewModel::calculate,
-        onReset = viewModel::reset
+        onSubmit = viewModel::calculate
     )
 }
 
@@ -50,17 +53,20 @@ fun HomeScreenContent(
     onDayChange: (String) -> Unit = {},
     onMonthChange: (String) -> Unit = {},
     onYearChange: (String) -> Unit = {},
-    onDateOfBirthChange: (String) -> Unit = {},
     onSubmit: () -> Unit = {},
-    onReset: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
-        Divider()
-        ContentSpacer()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(DividerColor)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         DateInputContainer(
             state = state,
             onDayChange = onDayChange,
@@ -68,17 +74,14 @@ fun HomeScreenContent(
             onYearChange = onYearChange,
             onSubmit = onSubmit
         )
-        ContentSpacer()
-        state.result?.let {
-            val (ageModel, nextBirthday, totalInfo) = state.result
-            Divider()
-            ContentSpacer()
-            AgeContainer(ageModel = ageModel)
-            ContentSpacer()
-            BirthdayContainer(nextBirthday = nextBirthday)
-            ContentSpacer()
-            TotalInfoContainer(totalInfo = totalInfo)
-            ContentSpacer()
+        Spacer(modifier = Modifier.height(16.dp))
+        state.result?.let { (age, birthday, total) ->
+            AgeContainer(age)
+            Spacer(modifier = Modifier.height(16.dp))
+            BirthdayContainer(birthday)
+            Spacer(modifier = Modifier.height(16.dp))
+            TotalInfoContainer(total)
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
