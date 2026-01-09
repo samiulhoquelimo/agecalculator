@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,29 +31,31 @@ fun TotalInfoContainer(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Top
         ) {
-            totalInfo.toData().forEachIndexed { index, (label, value) ->
-
-                val backgroundColor =
-                    if (index % 2 == 0)
-                        MaterialTheme.colorScheme.surface
-                    else
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(backgroundColor)
-                        .padding(horizontal = 8.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = label.asString(),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(
-                        text = value,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+            Card(
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                totalInfo.toData().forEachIndexed { index, (label, value) ->
+                    val backgroundColor =
+                        if (index % 2 == 0)
+                            MaterialTheme.colorScheme.surface
+                        else
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(backgroundColor)
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = label.asString(),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            text = value,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
         }
