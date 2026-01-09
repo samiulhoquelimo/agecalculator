@@ -60,7 +60,7 @@ fun TopAppBar() {
                 ) {
                     AppLanguage.entries.forEach { language ->
                         DropdownMenuItem(
-                            text = { Text(language.label) },
+                            text = { Text(text = "${language.flag}  ${language.label}") },
                             onClick = {
                                 expanded = false
                                 currentLanguage = language.code
