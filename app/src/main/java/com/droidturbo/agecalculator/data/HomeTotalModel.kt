@@ -1,5 +1,8 @@
 package com.droidturbo.agecalculator.data
 
+import com.droidturbo.agecalculator.R
+import com.droidturbo.agecalculator.utils.UiText
+
 data class HomeTotalModel(
     val tYear: Int = 0,
     val tMonth: Int = 0,
@@ -10,14 +13,14 @@ data class HomeTotalModel(
     val tSec: Int = 0
 )
 
-fun HomeTotalModel.toData(): List<Pair<String, String>> {
+fun HomeTotalModel.toData(): List<Pair<UiText, String>> {
     return arrayListOf(
-        "Total Year" to "$tYear",
-        "Total Month" to "$tMonth",
-        "Total Weeks" to "$tWeek",
-        "Total Days" to "$tDay",
-        "Total Hours" to "$tHour",
-        "Total Minutes" to "$tMin",
-        "Total Seconds" to "$tSec"
+        UiText.StringResource(R.string.total_year) to tYear.toString(),
+        UiText.StringResource(R.string.total_month) to tMonth.toString(),
+        UiText.StringResource(R.string.total_week) to tWeek.toString(),
+        UiText.StringResource(R.string.total_day) to tDay.toString(),
+        UiText.StringResource(R.string.total_hour) to tHour.toString(),
+        UiText.StringResource(R.string.total_minute) to tMin.toString(),
+        UiText.StringResource(R.string.total_second) to tSec.toString()
     )
 }

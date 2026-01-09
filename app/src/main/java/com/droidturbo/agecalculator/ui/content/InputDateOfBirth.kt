@@ -44,6 +44,7 @@ import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.home.HomeState
 import com.droidturbo.agecalculator.utils.formatDob
 import com.droidturbo.agecalculator.utils.isValidDob
+import com.droidturbo.agecalculator.utils.language
 import com.droidturbo.agecalculator.utils.showDatePicker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -251,7 +252,7 @@ fun InputDateOfBirth(
             exit = fadeOut() + shrinkVertically()
         ) {
             Text(
-                text = formattedFullDate ?: "",
+                text = language(formattedFullDate),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(start = 16.dp)

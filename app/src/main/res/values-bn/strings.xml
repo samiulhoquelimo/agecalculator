@@ -17,4 +17,11 @@
     <string name="dd_mm_yyyy">DD / MM / YYYY</string>
     <string name="clear">মুছে ফেলুন</string>
     <string name="change_language">ভাষা পরিবর্তন করুন</string>
+    <string name="total_year">মোট বছর</string>
+    <string name="total_month">মোট মাস</string>
+    <string name="total_week">মোট সপ্তাহ</string>
+    <string name="total_day">মোট দিন</string>
+    <string name="total_hour">মোট ঘন্টা</string>
+    <string name="total_minute">মোট মিনিট</string>
+    <string name="total_second">মোট সেকেন্ড</string>
 </resources>

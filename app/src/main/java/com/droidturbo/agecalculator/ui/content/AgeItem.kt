@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import com.droidturbo.agecalculator.utils.language
 
 @Composable
 fun AgeItem(
@@ -15,7 +16,7 @@ fun AgeItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = value.toString(),
+            text = language(value.toString()),
             style = MaterialTheme.typography.headlineSmall
         )
         Text(

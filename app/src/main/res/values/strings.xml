@@ -17,4 +17,11 @@
     <string name="dd_mm_yyyy">DD / MM / YYYY</string>
     <string name="clear">Clear</string>
     <string name="change_language">Change Language</string>
+    <string name="total_year">Total Year</string>
+    <string name="total_month">Total Month</string>
+    <string name="total_week">Total Weeks</string>
+    <string name="total_day">Total Days</string>
+    <string name="total_hour">Total Hours</string>
+    <string name="total_minute">Total Minutes</string>
+    <string name="total_second">Total Seconds</string>
 </resources>

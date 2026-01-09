@@ -27,7 +27,7 @@ fun TotalInfoContainer(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = label,
+                    text = label.asString(),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
