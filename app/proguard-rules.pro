@@ -1,21 +1,77 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ------------------------
+# General Android rules
+# ------------------------
+-dontoptimize
+-dontwarn android.support.**
+-keep class android.support.** { *; }
+-keep class androidx.** { *; }
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ------------------------
+# Keep Kotlin metadata
+# ------------------------
+-keep class kotlin.Metadata { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# ------------------------
+# Hilt / Dagger
+# ------------------------
+# Keep Hilt generated classes
+-keep class dagger.hilt.** { *; }
+-keep class hilt_aggregated_deps.** { *; }
+-keep class dagger.hilt.internal.** { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep generated components
+-keep class * implements dagger.hilt.internal.GeneratedComponent { *; }
+
+# Keep Hilt modules / entry points
+-keep class * extends dagger.hilt.android.HiltAndroidApp { *; }
+-keep class * extends dagger.hilt.android.AndroidEntryPoint { *; }
+
+# ------------------------
+# Jetpack Compose
+# ------------------------
+# Keep Compose metadata
+-keep class androidx.compose.** { *; }
+-keep class kotlin.jvm.internal.** { *; }
+-keep class androidx.compose.ui.tooling.** { *; }
+
+# ------------------------
+# Kotlin Serialization / Reflection
+# ------------------------
+-keepclassmembers class kotlin.jvm.internal.** { *; }
+-keepclassmembers class kotlin.reflect.jvm.internal.** { *; }
+
+# ------------------------
+# AndroidX lifecycle / ViewModel / LiveData
+# ------------------------
+-keep class androidx.lifecycle.** { *; }
+-keep interface androidx.lifecycle.** { *; }
+
+# ------------------------
+# Material Icons & Fonts
+# ------------------------
+-keep class androidx.compose.material.icons.** { *; }
+-keep class androidx.compose.ui.text.googlefonts.** { *; }
+
+# ------------------------
+# Test libraries (optional, keep for test builds)
+# ------------------------
+-keep class org.junit.** { *; }
+-keep class androidx.test.** { *; }
+-keep class com.google.common.truth.** { *; }
+-keep class androidx.test.espresso.** { *; }
+
+# ------------------------
+# General rules for reflection / serialization
+# ------------------------
+-keepclassmembers class ** {
+    @androidx.annotation.Keep *;
+}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+# ------------------------
+# Don't strip annotations
+# ------------------------
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
