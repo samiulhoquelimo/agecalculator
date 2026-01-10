@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import com.droidturbo.agecalculator.AgeCalculatorApp
 
+fun isEnglish(): Boolean = language() == LocaleManager.LANGUAGE_EN
+
 fun language(): String {
     return AgeCalculatorApp.localeManager?.language ?: LocaleManager.LANGUAGE_EN
 }

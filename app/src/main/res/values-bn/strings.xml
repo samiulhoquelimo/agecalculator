@@ -24,4 +24,16 @@
     <string name="total_hour">মোট ঘন্টা</string>
     <string name="total_minute">মোট মিনিট</string>
     <string name="total_second">মোট সেকেন্ড</string>
+    <string name="boishakh">বৈশাখ</string>
+    <string name="joishtho">জ্যৈষ্ঠ</string>
+    <string name="ashar">আষাঢ়</string>
+    <string name="srabon">শ্রাবণ</string>
+    <string name="bhadro">ভাদ্র</string>
+    <string name="ashwin">আশ্বিন</string>
+    <string name="kartik">কার্তিক</string>
+    <string name="agrahayan">অগ্রহায়ণ</string>
+    <string name="poush">পৌষ</string>
+    <string name="magh">মাঘ</string>
+    <string name="falgun">ফাল্গুন</string>
+    <string name="chaitra">চৈত্র</string>
 </resources>

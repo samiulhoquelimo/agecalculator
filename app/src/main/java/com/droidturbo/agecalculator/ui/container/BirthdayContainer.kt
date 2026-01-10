@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +28,10 @@ import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.data.BirthdayModel
 import com.droidturbo.agecalculator.ui.content.AgeItem
 import com.droidturbo.agecalculator.ui.content.AppCard
+import com.droidturbo.agecalculator.utils.engToBnDate
+import com.droidturbo.agecalculator.utils.isEnglish
 import com.droidturbo.agecalculator.utils.language
+import com.droidturbo.agecalculator.utils.toBnDate
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -36,6 +40,8 @@ import java.util.Locale
 fun BirthdayContainer(
     birthday: BirthdayModel = BirthdayModel()
 ) {
+    val context = LocalContext.current
+
     val formattedDate = remember(birthday.dayOfMonth, birthday.month, birthday.year) {
         runCatching {
             val date = LocalDate.of(birthday.year, birthday.month, birthday.dayOfMonth)
@@ -44,6 +50,11 @@ fun BirthdayContainer(
                 Locale.getDefault()
             )
             date.format(formatter)
+
+            date.format(formatter).let { enDate ->
+                if (isEnglish()) enDate
+                else "$enDate (${engToBnDate(date).toBnDate(context)})"
+            }
         }.getOrNull()
     }
 

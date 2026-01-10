@@ -24,4 +24,16 @@
     <string name="total_hour">Total Hours</string>
     <string name="total_minute">Total Minutes</string>
     <string name="total_second">Total Seconds</string>
+    <string name="boishakh">Boishakh</string>
+    <string name="joishtho">Joishtho</string>
+    <string name="ashar">Ashar</string>
+    <string name="srabon">Srabon</string>
+    <string name="bhadro">Bhadro</string>
+    <string name="ashwin">Ashwin</string>
+    <string name="kartik">Kartik</string>
+    <string name="agrahayan">Agrahayan</string>
+    <string name="poush">Poush</string>
+    <string name="magh">Magh</string>
+    <string name="falgun">Falgun</string>
+    <string name="chaitra">Chaitra</string>
 </resources>
