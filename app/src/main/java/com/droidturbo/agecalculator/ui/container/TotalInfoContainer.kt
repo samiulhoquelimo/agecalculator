@@ -19,6 +19,7 @@ import com.droidturbo.agecalculator.R
 import com.droidturbo.agecalculator.data.TotalInfoModel
 import com.droidturbo.agecalculator.data.toData
 import com.droidturbo.agecalculator.ui.content.AppCard
+import com.droidturbo.agecalculator.utils.language
 
 @Composable
 fun TotalInfoContainer(
@@ -52,7 +53,7 @@ fun TotalInfoContainer(
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = value,
+                            text = language(value),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
