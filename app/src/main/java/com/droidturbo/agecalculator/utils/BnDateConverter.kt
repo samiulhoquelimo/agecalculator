@@ -58,19 +58,18 @@ fun engToBnDate(date: LocalDate): Triple<Int, UiText, Int> {
 
     val falgunLeapYear = banglaYearStartEnglishYear
 
-    var daysPassed =
-        ChronoUnit.DAYS.between(startDate, date).toInt() + 1
+    var daysPassed = ChronoUnit.DAYS.between(startDate, date).toInt()
 
     val monthDays = getBanglaMonthDays(falgunLeapYear)
 
     var monthIndex = 0
-    while (daysPassed > monthDays[monthIndex]) {
+    while (monthIndex < monthDays.size - 1 && daysPassed >= monthDays[monthIndex]) {
         daysPassed -= monthDays[monthIndex]
         monthIndex++
     }
 
     val banglaMonth = banglaMonths[monthIndex]
-    val banglaDay = daysPassed
+    val banglaDay = daysPassed + 1
 
     return Triple(banglaYear, banglaMonth, banglaDay)
 }

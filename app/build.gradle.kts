@@ -36,6 +36,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    @Suppress("UnstableApiUsage")
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }

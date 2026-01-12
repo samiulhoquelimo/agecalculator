@@ -1,5 +1,6 @@
 package com.droidturbo.agecalculator.utils
 
+import android.app.DatePickerDialog
 import android.content.Context
 import java.time.LocalDate
 import java.util.Locale
@@ -11,7 +12,7 @@ fun showDatePicker(
 ) {
     val date = initialDate ?: LocalDate.now()
 
-    android.app.DatePickerDialog(
+    val datePickerDialog = DatePickerDialog(
         context,
         { _, year, month, dayOfMonth ->
             val formattedDate = String.format(
@@ -26,5 +27,11 @@ fun showDatePicker(
         date.year,
         date.monthValue - 1,
         date.dayOfMonth
-    ).show()
+    )
+
+    // Disable future dates
+    val today = System.currentTimeMillis()
+    datePickerDialog.datePicker.maxDate = today
+
+    datePickerDialog.show()
 }
