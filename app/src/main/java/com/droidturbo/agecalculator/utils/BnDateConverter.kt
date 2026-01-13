@@ -36,8 +36,8 @@ fun Triple<Int, UiText, Int>.toBnDate(context: Context): String {
 
 fun getBanglaMonthDays(falgunLeapYear: Int): List<Int> =
     listOf(
-        31, 31, 31, 31, 31,
-        30, 30, 30, 30, 30,
+        31, 31, 31, 31, 31, 31,
+        30, 30, 30, 30,
         if (isLeapYear(falgunLeapYear)) 30 else 29,
         30
     )
@@ -46,7 +46,6 @@ fun isLeapYear(year: Int): Boolean =
     (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
 
 fun engToBnDate(date: LocalDate): Triple<Int, UiText, Int> {
-
     val banglaYearStartEnglishYear =
         if (date >= LocalDate.of(date.year, 4, 14))
             date.year
@@ -56,7 +55,7 @@ fun engToBnDate(date: LocalDate): Triple<Int, UiText, Int> {
     val banglaYear = banglaYearStartEnglishYear - 593
     val startDate = LocalDate.of(banglaYearStartEnglishYear, 4, 14)
 
-    val falgunLeapYear = banglaYearStartEnglishYear
+    val falgunLeapYear = banglaYearStartEnglishYear + 1
 
     var daysPassed = ChronoUnit.DAYS.between(startDate, date).toInt()
 
